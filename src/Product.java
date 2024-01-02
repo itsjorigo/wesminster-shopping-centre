@@ -1,14 +1,14 @@
 abstract public class Product {
     private String productID;
-    private String name;
-    private int availableItems;
-    private double price;
-
-    public Product(String productID, String name, int availableItems, double price) {
+    private String productName;
+    private int productNOU;
+    private double productPrice;
+    
+    public Product(String productID, String productName, int productNOU, double productPrice) {
         this.productID = productID;
-        this.name = name;
-        this.availableItems = availableItems;
-        this.price = price;
+        this.productName = productName;
+        this.productNOU = productNOU;
+        this.productPrice = productPrice;
     }
 
     public String getProductID() {
@@ -19,27 +19,27 @@ abstract public class Product {
         this.productID = productID;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public int getAvailableItems() {
-        return availableItems;
+    public int getProductNOU() {
+        return productNOU;
     }
 
-    public void setAvailableItems(int availableItems) {
-        this.availableItems = availableItems;
+    public void setProductNOU(int productNOU) {
+        this.productNOU = productNOU;
     }
 
-    public double getPrice() {
-        return price;
+    public double getProductPrice() {
+        return productPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
     }
 }

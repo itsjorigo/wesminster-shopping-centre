@@ -1,26 +1,26 @@
 public class Electronics extends Product{
-    private String brand;
-    private int warrantyPeriod;
+    private String productBrand;
+    private int productWarranty;
 
-    public Electronics(String productID, String name, int availableItems, double price, String brand, int warrantyPeriod) {
-        super(productID, name, availableItems, price);
-        this.brand = brand;
-        this.warrantyPeriod = warrantyPeriod;
+    public Electronics(String productID, String productName, int productNOU, double productPrice, String productBrand, int productWarranty) {
+        super(productID, productName, productNOU, productPrice);
+        this.productBrand = productBrand;
+        this.productWarranty = productWarranty;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getProductBrand() {
+        return productBrand;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setProductBrand(String productBrand) {
+        this.productBrand = productBrand;
     }
 
-    public int getWarrantyPeriod() {
-        return warrantyPeriod;
+    public int getProductWarranty() {
+        return productWarranty;
     }
 
-    public void setWarrantyPeriod(int warrantyPeriod) {
-        this.warrantyPeriod = warrantyPeriod;
+    public void setProductWarranty(int productWarranty) {
+        this.productWarranty = productWarranty;
     }
 }
