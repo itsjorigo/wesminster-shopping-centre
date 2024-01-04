@@ -45,41 +45,45 @@ public class WestminsterShoppingManager implements ShoppingManager{
 
     @Override
     public void deleteProduct() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter Product ID of the Product needed to be deleted :");
-        String productID = sc.next();
-
         boolean state = false;
-        for (Product product : stocks){
-            if (product.getProductID().equals(productID)){
-                System.out.print("Confirmation to delete ? ( Y or N) :");
-                String confirmation = sc.next();
+        Scanner sc = new Scanner(System.in);
+        while (!state){
+            System.out.print("Enter Product ID of the Product needed to be deleted :");
+            String productID = sc.next();
 
-                if ("Y".equalsIgnoreCase(confirmation)){
-                    System.out.println("------------------------------------------------");
-                    System.out.println("Product ID              : " + product.getProductID());
-                    System.out.println("Product Name            : " + product.getProductName());
-                    System.out.println("No. of available items  : " + product.getProductNOU());
-                    System.out.println("Product Price           : " + product.getProductPrice());
-                    printSecondaryProductDetails(product);
+            for (Product product : stocks){
+                if (product.getProductID().equals(productID)){
+                    System.out.print("Product ID " + product.getProductID() + " Found. Confirmation to delete ? ( Y or N ) :");
+                    String confirmation = sc.next();
 
-                    stocks.remove(product);
-                } else if ("N".equalsIgnoreCase(confirmation)) {
-                    System.out.println("Request to delete product cancelled.");
+                    if ("Y".equalsIgnoreCase(confirmation)){
+                        System.out.println("------------------------------------------------");
+                        System.out.println("Product ID              : " + product.getProductID());
+                        System.out.println("Product Name            : " + product.getProductName());
+                        System.out.println("No. of available items  : " + product.getProductNOU());
+                        System.out.println("Product Price           : " + product.getProductPrice());
+                        printSecondaryProductDetails(product);
+
+                        stocks.remove(product);
+                        System.out.println("Product ID : " + productID + " deleted");
+
+                    } else if ("N".equalsIgnoreCase(confirmation)) {
+                        System.out.println("Request to delete product cancelled.");
+                    }
+
+                    System.out.println("Total no. of products : " + stocks.size());
+                    state = true;
+                    break;
                 }
-                state = true;
-                break;
             }
+
+            if (!state){
+                System.out.println("Product ID : " + productID + " not found");
+            }
+            System.out.println();
         }
-        if (state){
-            System.out.println("Product ID : " + productID + " deleted");
-        }else {
-            System.out.println("Product ID : " + productID + " not found");
-        }
-        System.out.println("Total no. of products : " + stocks.size());
-        System.out.println();
     }
+
 
     @Override
     public void printProducts() {
@@ -155,7 +159,5 @@ public class WestminsterShoppingManager implements ShoppingManager{
         }
     }
 
-    public List<Product> getStocks() {
-        return stocks;
-    }
+    public List<Product> getStocks() {return stocks;}
 }
