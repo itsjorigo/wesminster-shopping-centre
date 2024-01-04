@@ -1,9 +1,13 @@
 public interface ShoppingManager {
-    void addProduct(Product product);
-    void deleteProduct(String productID);
-    void printProducts();
-    void printSecondaryProductDetails(Product product);
-    void inputSecondaryProductDetails();
-    void inputProductDetails() ;
+    void addProduct();
 
+    void deleteProduct();
+
+    void printProducts();
+
+    void printSecondaryProductDetails(Product product);
+
+    Product inputProductDetails(int answer);
+
+    Product inputSecondaryProductDetails(String ProductID, String ProductName, int ProductNOU, double ProductPrice, int answer);
 }

@@ -3,14 +3,14 @@ import java.util.Iterator;
 //import java.util.List;
 
 public class ShoppingCart {
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Product> cartItems = new ArrayList<>();
 
     public void addProduct(Product product){
-        products.add(product);
+        cartItems.add(product);
     }
 
     public void removeProduct(String productID){
-        Iterator<Product> iterator = products.iterator();
+        Iterator<Product> iterator = cartItems.iterator();
         while (iterator.hasNext()){
             Product product = iterator.next();
             if (product.getProductID().equals(productID)) {
@@ -22,7 +22,7 @@ public class ShoppingCart {
 
     public double calculateTotal(){
         double total = 0.0;
-        for(Product product : products){
+        for(Product product : cartItems){
             total += product.getProductPrice();
         }
         return total;
