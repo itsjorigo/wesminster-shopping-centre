@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class WestminsterShoppingManager implements ShoppingManager{
-    private List<Product> stocks = new ArrayList<>();
+    private static List<Product> stocks = new ArrayList<>();
     private static final int maxStocks = 50;
     private static final String dataFile = "product.txt";
 
@@ -31,7 +31,10 @@ public class WestminsterShoppingManager implements ShoppingManager{
 
                     }else {System.out.println("Invalid Input. Try Again");}
 
-                }catch (InputMismatchException e){System.out.println("Invalid datatype. Please enter again.");}
+                }catch (InputMismatchException e){
+                    System.out.println("Invalid datatype. Please enter again.");
+                    continue;
+                }
             }
             System.out.println("Product added successfully !");
             System.out.println();
@@ -118,8 +121,10 @@ public class WestminsterShoppingManager implements ShoppingManager{
     public Product inputProductDetails(int answer) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter Product ID             : ");
-        String ProductID = sc.next();
+        String ProductID = inputHandling("Enter Product ID             : ");
+
+//        System.out.print("Enter Product ID             : ");
+//        String ProductID = sc.next();
 
         System.out.print("Enter Product Name           : ");
         String ProductName = sc.next();
@@ -159,5 +164,22 @@ public class WestminsterShoppingManager implements ShoppingManager{
         }
     }
 
+    @Override
+    public String inputHandling(String input){
+        Scanner sc = new Scanner(System.in);
+
+        while (true){
+            try{
+                System.out.print(input);
+                return sc.next();
+            }catch (java.util.InputMismatchException e){
+                System.out.println("Invalid Datatype. Enter input Again !");
+            }
+        }
+    }
+
     public List<Product> getStocks() {return stocks;}
 }
+
+
+

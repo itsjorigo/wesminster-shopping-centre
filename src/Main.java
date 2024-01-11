@@ -4,9 +4,9 @@ public class Main {
 
         WestminsterShoppingManager object1 = new WestminsterShoppingManager();
         object1.addProduct();
-        object1.addProduct();
+//        object1.addProduct();
 
-        object1.deleteProduct();
+//        object1.deleteProduct();
 
         object1.printProducts();
     }
