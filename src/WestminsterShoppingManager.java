@@ -29,11 +29,15 @@ public class WestminsterShoppingManager implements ShoppingManager{
                         stocks.add(inputProductDetails(answer));
                         System.out.println();
 
-                    }else {System.out.println("Invalid Input. Try Again");}
+                    }else {
+                        System.out.println("Invalid Input. Try Again");
+                        System.out.println("-------------------------------------------------------------------------");
+                    }
 
                 }catch (InputMismatchException e){
                     System.out.println("Invalid datatype. Please enter again.");
-                    continue;
+                    System.out.println("-------------------------------------------------------------------------");
+                    sc.next();
                 }
             }
             System.out.println("Product added successfully !");
@@ -51,13 +55,18 @@ public class WestminsterShoppingManager implements ShoppingManager{
         boolean state = false;
         Scanner sc = new Scanner(System.in);
         while (!state){
-            System.out.print("Enter Product ID of the Product needed to be deleted :");
-            String productID = sc.next();
+            String productID = inputHandlingString("Enter Product ID of the Product needed to be deleted :");
+
+//            System.out.print("Enter Product ID of the Product needed to be deleted :");
+//            String productID = sc.next();
 
             for (Product product : stocks){
                 if (product.getProductID().equals(productID)){
-                    System.out.print("Product ID " + product.getProductID() + " Found. Confirmation to delete ? ( Y or N ) :");
-                    String confirmation = sc.next();
+                    System.out.print("Product ID " + product.getProductID());
+                    String confirmation = inputHandlingString(" Found. Confirmation to delete ? ( Y or N ) :");
+
+//                    System.out.print(" Found. Confirmation to delete ? ( Y or N ) :");
+//                    String confirmation = sc.next();
 
                     if ("Y".equalsIgnoreCase(confirmation)){
                         System.out.println("------------------------------------------------");
@@ -86,7 +95,6 @@ public class WestminsterShoppingManager implements ShoppingManager{
             System.out.println();
         }
     }
-
 
     @Override
     public void printProducts() {
@@ -121,22 +129,12 @@ public class WestminsterShoppingManager implements ShoppingManager{
     public Product inputProductDetails(int answer) {
         Scanner sc = new Scanner(System.in);
 
-        String ProductID = inputHandling("Enter Product ID             : ");
-
-//        System.out.print("Enter Product ID             : ");
-//        String ProductID = sc.next();
-
-        System.out.print("Enter Product Name           : ");
-        String ProductName = sc.next();
-
-        System.out.print("Enter No. of available items : ");
-        int ProductNOU = sc.nextInt();
-
-        System.out.print("Enter Product Price          : ");
-        double ProductPrice = sc.nextDouble();
+        String ProductID = inputHandlingString("Enter Product ID             : ");
+        String ProductName = inputHandlingString("Enter Product Name           : ");
+        int ProductNOU = inputHandlingInt("Enter No. of available items : ");
+        double ProductPrice = inputHandlingDouble("Enter Product Price          : ");
 
         return inputSecondaryProductDetails(ProductID, ProductName, ProductNOU, ProductPrice, answer);
-
     }
 
     @Override
@@ -144,42 +142,71 @@ public class WestminsterShoppingManager implements ShoppingManager{
         Scanner sc = new Scanner(System.in);
 
         if (answer == 1){
-            System.out.print("Enter Product Brand          : ");
-            String ProductBrand = sc.next();
-
-            System.out.print("Enter Product Warranty       : ");
-            int ProductWarranty = sc.nextInt();
+            String ProductBrand = inputHandlingString("Enter Product Brand          : ");
+            int ProductWarranty = inputHandlingInt("Enter Product Warranty       : ");
 
             return new Electronics(ProductID, ProductName, ProductNOU, ProductPrice, ProductBrand, ProductWarranty);
-
         }else {
-            System.out.print("Enter Product Color          : ");
-            String ProductColor = sc.next();
-
-            System.out.print("Enter Product Size           : ");
-            String ProductSize = sc.next();
+            String ProductColor = inputHandlingString("Enter Product Color          : ");
+            String ProductSize = inputHandlingString("Enter Product Size           : ");
 
             return new Clothing(ProductID, ProductName, ProductNOU, ProductPrice, ProductColor, ProductSize);
-
         }
     }
 
     @Override
-    public String inputHandling(String input){
+    public void saveProducts(){}
+    @Override
+    public void LoadProducts(){}
+    @Override
+    public String inputHandlingString(String input) {
         Scanner sc = new Scanner(System.in);
 
-        while (true){
-            try{
+        while (true) {
+            try {
                 System.out.print(input);
                 return sc.next();
-            }catch (java.util.InputMismatchException e){
-                System.out.println("Invalid Datatype. Enter input Again !");
+            } catch (InputMismatchException e) {
+                sc.nextLine(); // Consume the invalid input
+                System.out.println("Invalid Datatype. Enter input Again!");
             }
         }
     }
 
+    @Override
+    public int inputHandlingInt(String input) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print(input);
+                return sc.nextInt();
+            } catch (InputMismatchException e) {
+                sc.nextLine(); // Consume the invalid input
+                System.out.println("Invalid Datatype. Enter input Again!");
+            }
+        }
+    }
+
+    @Override
+    public double inputHandlingDouble(String input) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print(input);
+                return sc.nextDouble();
+            } catch (InputMismatchException e) {
+                sc.nextLine(); // Consume the invalid input
+                System.out.println("Invalid Datatype. Enter input Again!");
+            }
+        }
+    }
+
+
     public List<Product> getStocks() {return stocks;}
 }
+
 
 
 

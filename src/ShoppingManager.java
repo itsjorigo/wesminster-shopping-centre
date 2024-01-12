@@ -11,5 +11,13 @@ public interface ShoppingManager {
 
     Product inputSecondaryProductDetails(String ProductID, String ProductName, int ProductNOU, double ProductPrice, int answer);
 
-    String inputHandling(String input);
+    void saveProducts();
+
+    void LoadProducts();
+
+    String inputHandlingString(String input);
+
+    int inputHandlingInt(String input);
+
+    double inputHandlingDouble(String input);
 }
