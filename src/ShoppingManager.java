@@ -9,8 +9,6 @@ public interface ShoppingManager {
 
     Product inputProductDetails(int answer);
 
-    Product inputSecondaryProductDetails(String ProductID, String ProductName, int ProductNOU, double ProductPrice, int answer);
-
     void saveProducts();
 
     void LoadProducts();
@@ -20,4 +18,6 @@ public interface ShoppingManager {
     int inputHandlingInt(String input);
 
     double inputHandlingDouble(String input);
+
+    String inputHandleProductID(String ProductID);
 }
