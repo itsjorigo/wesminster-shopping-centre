@@ -9,7 +9,9 @@ public class Main {
         System.out.println("2. Delete a product");
         System.out.println("3. Print the lists of the products");
         System.out.println("4. Save in a file");
-        System.out.println("5. Exit Console");
+        System.out.println("5. Load from file");
+        System.out.println("6. Exit Console");
+
         System.out.println();
 
         int option = manager.inputHandlingInt("Enter Your Option : ");
@@ -29,10 +31,14 @@ public class Main {
                 manager.saveProducts();
                 break;
             case 5:
+                manager.loadProducts();
                 break;
+            case 6:
+                break;
+            default:
+                System.out.println("Invalid option. Please try again.");
         }
     }
-
 
     public static void main(String[] args) {
 

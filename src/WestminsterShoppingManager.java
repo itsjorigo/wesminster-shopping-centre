@@ -1,8 +1,5 @@
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class WestminsterShoppingManager implements ShoppingManager {
     static Map<String, Product> stocks = new HashMap<>();
@@ -107,9 +104,13 @@ public class WestminsterShoppingManager implements ShoppingManager {
         Main.ManagerConsoleContent();
     }
 
-    // ... (Other methods remain the same)
     @Override
     public void printProducts() {
+        List<Map.Entry<String, Product>> productList = new ArrayList<>(stocks.entrySet());
+
+        // Sort the list based on product names
+        productList.sort(Comparator.comparing(entry -> entry.getValue().getProductName()));
+
         for (Map.Entry<String, Product> entry : stocks.entrySet()) {
             Product product = entry.getValue();
             System.out.println("------------------------------------------------");
@@ -165,11 +166,24 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
     @Override
     public void saveProducts(){
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dataFile))) {
+            out.writeObject(stocks);
+            System.out.println("Products saved to file.");
+        } catch (IOException e) {
+            System.out.println("Error saving products to file: " + e.getMessage());
+        }
         Main.ManagerConsoleContent();
     } // TODO: 1/12/2024 create save functionality
 
     @Override
-    public void LoadProducts(){
+    public void loadProducts(){
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dataFile))) {
+            stocks = (Map<String, Product>) in.readObject();
+            System.out.println("Products loaded from file.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading products from file: " + e.getMessage());
+            e.printStackTrace(); // Add this line for debugging
+        }
         Main.ManagerConsoleContent();
     } // TODO: 1/12/2024 create load functionality
 

@@ -11,7 +11,7 @@ public interface ShoppingManager {
 
     void saveProducts();
 
-    void LoadProducts();
+    void loadProducts();
 
     String inputHandlingString(String input);
 
