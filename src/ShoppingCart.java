@@ -1,30 +1,25 @@
+// ShoppingCart class
+
+import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Iterator;
-//import java.util.List;
+import java.util.List;
 
-public class ShoppingCart {
-    private ArrayList<Product> cartItems = new ArrayList<>();
+public class ShoppingCart extends JFrame {
+    private List<String[]> items;
 
-    public void addProduct(Product product){
-        cartItems.add(product);
+    public ShoppingCart() {
+        items = new ArrayList<>();
     }
 
-    public void removeProduct(String productID){
-        Iterator<Product> iterator = cartItems.iterator();
-        while (iterator.hasNext()){
-            Product product = iterator.next();
-            if (product.getProductID().equals(productID)) {
-                iterator.remove();
-            }
-        }
-//      products.removeIf(product -> product.getProductID().equals(productID));
+    public void addItem(String[] itemDetails) {
+        items.add(itemDetails);
     }
 
-    public double calculateTotal(){
-        double total = 0.0;
-        for(Product product : cartItems){
-            total += product.getProductPrice();
+    public void displayShoppingCart() {
+        // Display or perform operations on the shopping cart data
+        for (String[] item : items) {
+            System.out.println("Product: " + item[1] + ", Price: " + item[3]);
+            // You can customize the display based on your requirements
         }
-        return total;
     }
 }

@@ -16,6 +16,7 @@ public class WestminsterShoppingGUI {
     private JButton shoppingCartButton, addToCartButton;
     private JTable productsTable;
     private JTextArea itemDetailsTextArea;
+    private ShoppingCart shoppingCart;
 
     public WestminsterShoppingGUI() {
         // Initialize the frame
@@ -27,6 +28,8 @@ public class WestminsterShoppingGUI {
         categoryComboBox = new JComboBox<>(new String[]{"All", "Electronics", "Clothes"});
         shoppingCartButton = new JButton("Shopping Cart");
         addToCartButton = new JButton("Add to Shopping Cart");
+        DefaultTableModel tableModel = null;
+        productsTable = new JTable(tableModel);
 
         // Change table column size
         Object[][] tableData = new Object[WestminsterShoppingManager.stocks.size()][5];
@@ -56,7 +59,7 @@ public class WestminsterShoppingGUI {
         String[] columnNames = {"Product ID", "Name", "Category", "Price(£)", "Information"};
 
         // Create a table model
-        DefaultTableModel tableModel = new DefaultTableModel(tableData, columnNames);
+        tableModel = new DefaultTableModel(tableData, columnNames);
 
         // Create the JTable with the table model
         productsTable = new JTable(tableModel);
@@ -76,6 +79,8 @@ public class WestminsterShoppingGUI {
             productsTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
+        itemDetailsTextArea = new JTextArea();
+
         // Set layout manager
         frame.setLayout(new BorderLayout());
 
@@ -90,11 +95,19 @@ public class WestminsterShoppingGUI {
         topPanel.add(shoppingCartPanel);
 
         // Center panel with product table
-        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        centerPanel.add(new JScrollPane(productsTable), BorderLayout.CENTER);
+        JScrollPane tableScrollPane = new JScrollPane(productsTable);
+        tableScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        tableScrollPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 50, 20));
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+//        centerPanel.add(new JScrollPane(productsTable), BorderLayout.CENTER);
+        centerPanel.add(tableScrollPane, BorderLayout.CENTER);
 
         // Bottom panel with item details and add to cart button
         JPanel bottomPanel = new JPanel(new BorderLayout());
+//        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        itemDetailsTextArea.setPreferredSize(new Dimension(400, 200)); // Set your preferred size
+
         bottomPanel.add(new JScrollPane(itemDetailsTextArea), BorderLayout.CENTER);
         bottomPanel.add(addToCartButton, BorderLayout.SOUTH);
 
@@ -108,6 +121,7 @@ public class WestminsterShoppingGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add your logic for the shopping cart button
+                shoppingCart.hashCode();
                 JOptionPane.showMessageDialog(frame, "Shopping Cart button clicked");
             }
         });
@@ -118,6 +132,17 @@ public class WestminsterShoppingGUI {
             public void actionPerformed(ActionEvent e) {
                 // Add your logic for the add to cart button
                 JOptionPane.showMessageDialog(frame, "Add to Cart button clicked");
+                addToShoppingCart();
+            }
+
+            private void addToShoppingCart() {
+                String itemDetails = itemDetailsTextArea.getText();
+                if (!itemDetails.isEmpty()) {
+                    // Split the itemDetails and add to the shopping cart
+                    String[] detailsArray = itemDetails.split("\\s+");
+                    shoppingCart.addItem(detailsArray);
+                    JOptionPane.showMessageDialog(frame, "Item added to Shopping Cart");
+                }
             }
         });
 
@@ -136,10 +161,10 @@ public class WestminsterShoppingGUI {
                     for (int i = 0; i < WestminsterShoppingManager.stocks.size(); i++) {
                         Product product = WestminsterShoppingManager.stocks.get(i);
 
-                        if (product instanceof Electronics){
+                        if (product instanceof Electronics) {
                             Category = "Electronics";
                             Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
-                        }else if((product instanceof Clothing)){
+                        } else if ((product instanceof Clothing)) {
                             Category = "Clothing";
                             Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
                         }
@@ -157,7 +182,7 @@ public class WestminsterShoppingGUI {
                     for (int i = 0; i < WestminsterShoppingManager.stocks.size(); i++) {
                         Product product = WestminsterShoppingManager.stocks.get(i);
 
-                        if (product instanceof Electronics){
+                        if (product instanceof Electronics) {
                             Category = "Electronics";
                             Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
 
@@ -175,7 +200,7 @@ public class WestminsterShoppingGUI {
                     for (int i = 0; i < WestminsterShoppingManager.stocks.size(); i++) {
                         Product product = WestminsterShoppingManager.stocks.get(i);
 
-                        if((product instanceof Clothing)){
+                        if ((product instanceof Clothing)) {
                             Category = "Clothing";
                             Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
 
@@ -186,6 +211,20 @@ public class WestminsterShoppingGUI {
                             tableData[i][4] = Information;
                         }
                     }
+                }
+            }
+        });
+
+        productsTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = productsTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Retrieve information from the selected row and display it in the itemDetailsTextArea
+                    StringBuilder productInfo = new StringBuilder();
+                    for (int i = 0; i < productsTable.getColumnCount(); i++) {
+                        productInfo.append(productsTable.getValueAt(selectedRow, i)).append(" ");
+                    }
+                    itemDetailsTextArea.setText(productInfo.toString());
                 }
             }
         });
@@ -202,7 +241,8 @@ public class WestminsterShoppingGUI {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new WestminsterShoppingGUI();
+                WestminsterShoppingGUI gui = new WestminsterShoppingGUI();
+                gui.shoppingCart = new ShoppingCart();
             }
         });
     }
