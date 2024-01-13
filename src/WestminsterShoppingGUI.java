@@ -6,20 +6,28 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 public class WestminsterShoppingGUI {
-
-//ArrayList<java.lang.Object[]> data = new ArrayList<java.lang.Object[]>();
 
     private JFrame frame;
     private JComboBox<String> categoryComboBox;
     private JButton shoppingCartButton, addToCartButton;
     private JTable productsTable;
     private JTextArea itemDetailsTextArea;
+    private DefaultTableModel tableModel; // Initialize the table model here
     private ShoppingCart shoppingCart;
-    ArrayList<Product> productList = new ArrayList<>(WestminsterShoppingManager.stocks.values());
 
+    public ArrayList<Product> hashMapToArrayList() {
+        ArrayList<Product> arry = new ArrayList<>(WestminsterShoppingManager.stocks.values());
+        for (Product i : arry){
+            System.out.println(i.getProductID());
+            System.out.println(i.getProductName());
+            System.out.println(i.getProductNOU());
+            System.out.println("-----------------------------------");
+        }
+        return arry;
+    }
 
     public WestminsterShoppingGUI() {
         // Initialize the frame
@@ -31,20 +39,15 @@ public class WestminsterShoppingGUI {
         categoryComboBox = new JComboBox<>(new String[]{"All", "Electronics", "Clothes"});
         shoppingCartButton = new JButton("Shopping Cart");
         addToCartButton = new JButton("Add to Shopping Cart");
-        DefaultTableModel tableModel = null;
-        productsTable = new JTable(tableModel);
 
-        // Change table column size
-        Object[][] tableData = new Object[WestminsterShoppingManager.stocks.size()][5];
+//        // Create the JTable with the table model
+//        tableModel = new DefaultTableModel(null, new String[]{"Product ID", "Name", "Category", "Price(£)", "Information"});
+//        productsTable = new JTable(tableModel);
 
-        // Column names
-        String[] columnNames = {"Product ID", "Name", "Category", "Price(£)", "Information"};
-
-        // Create a table model
-        tableModel = new DefaultTableModel(tableData, columnNames);
-
-        // Create the JTable with the table model
-        productsTable = new JTable(tableModel);
+        productsTable = new JTable();
+        // Initialize the table model here
+        tableModel = new DefaultTableModel(null, new String[]{"Product ID", "Name", "Category", "Price(£)", "Information"});
+        productsTable.setModel(tableModel);
 
         // Set column widths
         int[] columnWidths = {100, 150, 100, 120, 150}; // Adjust these values as needed
@@ -54,7 +57,7 @@ public class WestminsterShoppingGUI {
             column.setPreferredWidth(columnWidths[i]);
         }
 
-//        product details to the center of cell
+        // Product details to the center of cell
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < productsTable.getColumnCount(); i++) {
@@ -82,13 +85,11 @@ public class WestminsterShoppingGUI {
         tableScrollPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 50, 20));
 
         JPanel centerPanel = new JPanel(new BorderLayout());
-//        centerPanel.add(new JScrollPane(productsTable), BorderLayout.CENTER);
         centerPanel.add(tableScrollPane, BorderLayout.CENTER);
 
         // Bottom panel with item details and add to cart button
         JPanel bottomPanel = new JPanel(new BorderLayout());
-//        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        itemDetailsTextArea.setPreferredSize(new Dimension(400, 200)); // Set your preferred size
+        itemDetailsTextArea.setPreferredSize(new Dimension(400, 200));
 
         bottomPanel.add(new JScrollPane(itemDetailsTextArea), BorderLayout.CENTER);
         bottomPanel.add(addToCartButton, BorderLayout.SOUTH);
@@ -110,7 +111,6 @@ public class WestminsterShoppingGUI {
 
         addToCartButton.addActionListener(new ActionListener() {
             @Override
-
             public void actionPerformed(ActionEvent e) {
                 // Add your logic for the add to cart button
                 JOptionPane.showMessageDialog(frame, "Add to Cart button clicked");
@@ -139,9 +139,10 @@ public class WestminsterShoppingGUI {
                 String Information = null;
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
 
-                for (int i = 0; i < productList.size(); i++) {
-                    Product product = productList.get(i);
+                // Call hashMapToArrayList() once and store the result
+                ArrayList<Product> productList = hashMapToArrayList();
 
+                for (Product product : productList) {
                     if (product instanceof Electronics) {
                         Category = "Electronics";
                         Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
@@ -149,126 +150,30 @@ public class WestminsterShoppingGUI {
                         Category = "Clothing";
                         Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
                     }
-
-                    tableData[i][0] = product.getProductID();
-                    tableData[i][1] = product.getProductName();
-                    tableData[i][2] = Category;
-                    tableData[i][3] = product.getProductPrice();
-                    tableData[i][4] = Information;
-                }
-
-
-//                int dataSize = 0;
-//
-//                if ("All".equals(selectedCategory)) {
-//                    dataSize = productList.size();
-//                } else if ("Electronics".equals(selectedCategory)) {
-//                    for (Product product : productList) {
-//                        if (product instanceof Electronics) {
-//                            dataSize++;
-//                        }
-//                    }
-//                } else if ("Clothes".equals(selectedCategory)) {
-//                    for (Product product : productList) {
-//                        if (product instanceof Clothing) {
-//                            dataSize++;
-//                        }
-//                    }
-//                }
-//
-//                Object[][] tableData = new Object[dataSize][5];
-//
-//                // Print corresponding values based on the selected item
-//                int tableIndex = 0; // Index to fill the tableData
-//
-//                // Print corresponding values based on the selected item
-//                if ("All".equals(selectedCategory)) {
-//
-//                    for (int i = 0; i < productList.size(); i++) {
-//                        Product product = productList.get(i);
-//
-//                        if (product instanceof Electronics) {
-//                            Category = "Electronics";
-//                            Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
-//                        } else if ((product instanceof Clothing)) {
-//                            Category = "Clothing";
-//                            Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
-//                        }
-//
-//                        tableData[tableIndex][0] = product.getProductID();
-//                        tableData[tableIndex][1] = product.getProductName();
-//                        tableData[tableIndex][2] = Category;
-//                        tableData[tableIndex][3] = product.getProductPrice();
-//                        tableData[tableIndex][4] = Information;
-//
-//                        tableIndex++; // Increment tableIndex
-//                    }
-//
-//                } else if ("Electronics".equals(selectedCategory)) {
-//
-//                    for (int i = 0; i < productList.size(); i++) {
-//                        Product product = productList.get(i);
-//
-//                        if (product instanceof Electronics) {
-//                            Category = "Electronics";
-//                            Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
-//
-//                            tableData[tableIndex][0] = product.getProductID();
-//                            tableData[tableIndex][1] = product.getProductName();
-//                            tableData[tableIndex][2] = Category;
-//                            tableData[tableIndex][3] = product.getProductPrice();
-//                            tableData[tableIndex][4] = Information;
-//
-//                            tableIndex++; // Increment tableIndex
-//                        }
-//                    }
-//
-//                } else if ("Clothes".equals(selectedCategory)) {
-//
-//                    for (int i = 0; i < productList.size(); i++) {
-//                        Product product = productList.get(i);
-//
-//                        if ((product instanceof Clothing)) {
-//                            Category = "Clothing";
-//                            Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
-//
-//                            tableData[tableIndex][0] = product.getProductID();
-//                            tableData[tableIndex][1] = product.getProductName();
-//                            tableData[tableIndex][2] = Category;
-//                            tableData[tableIndex][3] = product.getProductPrice();
-//                            tableData[tableIndex][4] = Information;
-//
-//                            tableIndex++; // Increment tableIndex
-//                        }
-//                    }
-//                }
-
-                // Set the new data to the table model
-//                for (int i = 0; i < tableData.length; i++) {
-//                    model.addRow(new Object[]{tableData[i][0], tableData[i][1], tableData[i][2], tableData[i][3], tableData[i][4]});
-//                }
-            }
-        });
-
-        productsTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int selectedRow = productsTable.getSelectedRow();
-                if (selectedRow != -1) {
-                    // Retrieve information from the selected row and display it in the itemDetailsTextArea
-                    StringBuilder productInfo = new StringBuilder();
-                    for (int i = 0; i < productsTable.getColumnCount(); i++) {
-                        productInfo.append(productsTable.getValueAt(selectedRow, i)).append(" ");
-                    }
-                    itemDetailsTextArea.setText(productInfo.toString());
+                    tableModel.addRow(new Object[]{product.getProductID(), product.getProductName(), Category, product.getProductPrice(), Information});
                 }
             }
         });
+
+//        productsTable.getSelectionModel().addListSelectionListener(e -> {
+//            if (!e.getValueIsAdjusting()) {
+//                int selectedRow = productsTable.getSelectedRow();
+//                if (selectedRow != -1) {
+//                    // Retrieve information from the selected row and display it in the itemDetailsTextArea
+//                    StringBuilder productInfo = new StringBuilder();
+//                    for (int i = 0; i < productsTable.getColumnCount(); i++) {
+//                        productInfo.append(productsTable.getValueAt(selectedRow, i)).append(" ");
+//                    }
+//                    itemDetailsTextArea.setText(productInfo.toString());
+//                }
+//            }
+//        });
+
         // Set frame visibility
         frame.setVisible(true);
     }
 
-
-    public void runGUI(){
+    public void runGUI() {
         WestminsterShoppingGUI.main(null);
     }
 

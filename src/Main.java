@@ -34,6 +34,9 @@ public class Main {
                 manager.loadProducts();
                 break;
             case 6:
+                WestminsterShoppingGUI t = new WestminsterShoppingGUI();
+                t.hashMapToArrayList();
+//                WestminsterShoppingGUI.main(null);
                 break;
             default:
                 System.out.println("Invalid option. Please try again.");
@@ -49,8 +52,8 @@ public class Main {
 
         ManagerConsoleContent();
 
-        WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
+//        WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
 
-        GUI.runGUI();
+//        GUI.runGUI();
     }
 }
