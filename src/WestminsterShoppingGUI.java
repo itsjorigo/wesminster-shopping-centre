@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WestminsterShoppingGUI {
 
@@ -17,6 +18,8 @@ public class WestminsterShoppingGUI {
     private JTable productsTable;
     private JTextArea itemDetailsTextArea;
     private ShoppingCart shoppingCart;
+    ArrayList<Product> productList = new ArrayList<>(WestminsterShoppingManager.stocks.values());
+
 
     public WestminsterShoppingGUI() {
         // Initialize the frame
@@ -33,27 +36,6 @@ public class WestminsterShoppingGUI {
 
         // Change table column size
         Object[][] tableData = new Object[WestminsterShoppingManager.stocks.size()][5];
-
-//        String Category = null;
-//        String Information = null;
-//        for (int i = 0; i < WestminsterShoppingManager.list_of_products.size(); i++) {
-//            Product product = WestminsterShoppingManager.list_of_products.get(i);
-//
-//            if (product instanceof Electronics){
-//                Category = "Electronics";
-//                Information = ((Electronics) product).getProduct_brand() + "," + ((Electronics) product).getProduct_warranty();
-//            }else if((product instanceof Clothing)){
-//                Category = "Clothing";
-//                Information = ((Clothing) product).getProduct_color() + "," + ((Clothing) product).getProduct_size();
-//            }
-//
-//            tableData[i][0] = product.getProduct_ID();
-//            tableData[i][1] = product.getProduct_name();
-//            tableData[i][2] = Category;
-//            tableData[i][3] = product.getPrice();
-//            tableData[i][4] = Information;
-//        }
-
 
         // Column names
         String[] columnNames = {"Product ID", "Name", "Category", "Price(£)", "Information"};
@@ -150,68 +132,121 @@ public class WestminsterShoppingGUI {
         categoryComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel) productsTable.getModel();
+                model.setRowCount(0); // Clear existing rows
+
                 String Category = null;
                 String Information = null;
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
 
-                // Print corresponding values based on the selected item
-                if ("All".equals(selectedCategory)) {
-                    System.out.println("1");
+                for (int i = 0; i < productList.size(); i++) {
+                    Product product = productList.get(i);
 
-                    for (int i = 0; i < WestminsterShoppingManager.stocks.size(); i++) {
-                        Product product = WestminsterShoppingManager.stocks.get(i);
-
-                        if (product instanceof Electronics) {
-                            Category = "Electronics";
-                            Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
-                        } else if ((product instanceof Clothing)) {
-                            Category = "Clothing";
-                            Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
-                        }
-
-                        tableData[i][0] = product.getProductID();
-                        tableData[i][1] = product.getProductName();
-                        tableData[i][2] = Category;
-                        tableData[i][3] = product.getProductPrice();
-                        tableData[i][4] = Information;
+                    if (product instanceof Electronics) {
+                        Category = "Electronics";
+                        Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
+                    } else if ((product instanceof Clothing)) {
+                        Category = "Clothing";
+                        Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
                     }
 
-                } else if ("Electronics".equals(selectedCategory)) {
-                    System.out.println("2");
-
-                    for (int i = 0; i < WestminsterShoppingManager.stocks.size(); i++) {
-                        Product product = WestminsterShoppingManager.stocks.get(i);
-
-                        if (product instanceof Electronics) {
-                            Category = "Electronics";
-                            Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
-
-                            tableData[i][0] = product.getProductID();
-                            tableData[i][1] = product.getProductName();
-                            tableData[i][2] = Category;
-                            tableData[i][3] = product.getProductPrice();
-                            tableData[i][4] = Information;
-                        }
-                    }
-
-                } else if ("Clothes".equals(selectedCategory)) {
-                    System.out.println("3");
-
-                    for (int i = 0; i < WestminsterShoppingManager.stocks.size(); i++) {
-                        Product product = WestminsterShoppingManager.stocks.get(i);
-
-                        if ((product instanceof Clothing)) {
-                            Category = "Clothing";
-                            Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
-
-                            tableData[i][0] = product.getProductID();
-                            tableData[i][1] = product.getProductName();
-                            tableData[i][2] = Category;
-                            tableData[i][3] = product.getProductPrice();
-                            tableData[i][4] = Information;
-                        }
-                    }
+                    tableData[i][0] = product.getProductID();
+                    tableData[i][1] = product.getProductName();
+                    tableData[i][2] = Category;
+                    tableData[i][3] = product.getProductPrice();
+                    tableData[i][4] = Information;
                 }
+
+
+//                int dataSize = 0;
+//
+//                if ("All".equals(selectedCategory)) {
+//                    dataSize = productList.size();
+//                } else if ("Electronics".equals(selectedCategory)) {
+//                    for (Product product : productList) {
+//                        if (product instanceof Electronics) {
+//                            dataSize++;
+//                        }
+//                    }
+//                } else if ("Clothes".equals(selectedCategory)) {
+//                    for (Product product : productList) {
+//                        if (product instanceof Clothing) {
+//                            dataSize++;
+//                        }
+//                    }
+//                }
+//
+//                Object[][] tableData = new Object[dataSize][5];
+//
+//                // Print corresponding values based on the selected item
+//                int tableIndex = 0; // Index to fill the tableData
+//
+//                // Print corresponding values based on the selected item
+//                if ("All".equals(selectedCategory)) {
+//
+//                    for (int i = 0; i < productList.size(); i++) {
+//                        Product product = productList.get(i);
+//
+//                        if (product instanceof Electronics) {
+//                            Category = "Electronics";
+//                            Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
+//                        } else if ((product instanceof Clothing)) {
+//                            Category = "Clothing";
+//                            Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
+//                        }
+//
+//                        tableData[tableIndex][0] = product.getProductID();
+//                        tableData[tableIndex][1] = product.getProductName();
+//                        tableData[tableIndex][2] = Category;
+//                        tableData[tableIndex][3] = product.getProductPrice();
+//                        tableData[tableIndex][4] = Information;
+//
+//                        tableIndex++; // Increment tableIndex
+//                    }
+//
+//                } else if ("Electronics".equals(selectedCategory)) {
+//
+//                    for (int i = 0; i < productList.size(); i++) {
+//                        Product product = productList.get(i);
+//
+//                        if (product instanceof Electronics) {
+//                            Category = "Electronics";
+//                            Information = ((Electronics) product).getProductBrand() + "," + ((Electronics) product).getProductWarranty();
+//
+//                            tableData[tableIndex][0] = product.getProductID();
+//                            tableData[tableIndex][1] = product.getProductName();
+//                            tableData[tableIndex][2] = Category;
+//                            tableData[tableIndex][3] = product.getProductPrice();
+//                            tableData[tableIndex][4] = Information;
+//
+//                            tableIndex++; // Increment tableIndex
+//                        }
+//                    }
+//
+//                } else if ("Clothes".equals(selectedCategory)) {
+//
+//                    for (int i = 0; i < productList.size(); i++) {
+//                        Product product = productList.get(i);
+//
+//                        if ((product instanceof Clothing)) {
+//                            Category = "Clothing";
+//                            Information = ((Clothing) product).getProductColor() + "," + ((Clothing) product).getProductSize();
+//
+//                            tableData[tableIndex][0] = product.getProductID();
+//                            tableData[tableIndex][1] = product.getProductName();
+//                            tableData[tableIndex][2] = Category;
+//                            tableData[tableIndex][3] = product.getProductPrice();
+//                            tableData[tableIndex][4] = Information;
+//
+//                            tableIndex++; // Increment tableIndex
+//                        }
+//                    }
+//                }
+
+                // Set the new data to the table model
+//                for (int i = 0; i < tableData.length; i++) {
+//                    model.addRow(new Object[]{tableData[i][0], tableData[i][1], tableData[i][2], tableData[i][3], tableData[i][4]});
+//                }
             }
         });
 
