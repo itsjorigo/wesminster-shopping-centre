@@ -108,10 +108,9 @@ public class Main {
                 case 1:
                     //TODO : user functionality implementation
                     //TODO : GUI Should start to run
-                    //WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
-                    //GUI.runGUI();
+                    WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
+                    WestminsterShoppingGUI.main(null);
 
-                    System.out.println("user path way");
                     break;
                 case 2:
                     ManagerConsoleContent();
