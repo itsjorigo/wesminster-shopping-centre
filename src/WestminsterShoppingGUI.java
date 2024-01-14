@@ -6,10 +6,15 @@ import java.awt.event.ActionListener;
 public class WestminsterShoppingGUI {
     private JFrame login;
     private JFrame signIn;
+    private JFrame productSelectInterface;
+    private JFrame shoppingCart;
+
 
     public WestminsterShoppingGUI() {
         login = userLogin();
         signIn = userSignIn();
+        productSelectInterface = productSelectInterface();
+        shoppingCart = shoppingCart();
     }
 
     public JFrame userLogin() {
@@ -27,8 +32,9 @@ public class WestminsterShoppingGUI {
         loginButton.addActionListener(e -> {
             // Add login functionality here
             // For now, let's just display a message
-            JOptionPane.showMessageDialog(login, "Login button clicked!");
-
+//            JOptionPane.showMessageDialog(login, "Login button clicked!");
+            productSelectInterface.setVisible(true);
+            login.setVisible(false);
         });
 
         JButton signupButton = new JButton("Signup");
@@ -86,6 +92,53 @@ public class WestminsterShoppingGUI {
         return signIn;
     }
 
+    public JFrame productSelectInterface(){
+        JFrame productSelect = new JFrame("Westminster Shopping Centre");
+
+        JPanel productSelectPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        JLabel categoryPanel = new JLabel("Select Product Category: ");
+
+        String[] options = {"All", "Electronics", "Clothing"};
+        JComboBox<String> categoryComboBox = new JComboBox<>(options);
+
+        JButton shoppingCartButton = new JButton("Sign In");
+        shoppingCartButton.addActionListener(e -> {
+            // Add signIn functionality here
+            // For now, let's just display a message
+//            JOptionPane.showMessageDialog(productSelect, "Shopping Cart button clicked!");
+            shoppingCart.setVisible(true);
+            productSelectInterface.setVisible(false);
+
+        });
+
+        productSelectPanel.add(categoryPanel);
+        productSelectPanel.add(categoryComboBox);
+        productSelectPanel.add(shoppingCartButton);
+
+        productSelect.add(productSelectPanel);
+        productSelect.setSize(800,800);
+        productSelect.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        return productSelect;
+
+    }
+
+    public JFrame shoppingCart(){
+        JFrame cart = new JFrame("Shoppning Cart");
+
+        JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        JLabel cartLabel = new JLabel("Shopping Cart");
+
+        cartPanel.add(cartLabel);
+
+        cart.add(cartPanel);
+        cart.setSize(400, 400);
+        cart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        return cart;
+    }
     public static void main(String[] args) {
         WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
 
