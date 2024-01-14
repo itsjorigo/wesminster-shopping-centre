@@ -13,11 +13,11 @@ public interface ShoppingManager {
 
     void loadProducts();
 
-    String inputHandlingString(String input);
-
-    int inputHandlingInt(String input);
-
-    double inputHandlingDouble(String input);
+//    String inputHandlingString(String input);
+//
+//    int inputHandlingInt(String input);
+//
+//    double inputHandlingDouble(String input);
 
     String inputHandleProductID(String ProductID);
 }

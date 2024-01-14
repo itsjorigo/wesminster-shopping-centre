@@ -11,7 +11,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         Scanner sc = new Scanner(System.in);
         boolean validInput = false;
 
-        int count = inputHandlingInt("No. of products to be added : ");
+        int count = Main.inputHandlingInt("No. of products to be added : ");
 
         for (int i = 1; i <= count; i++) {
             if (stocks.size() <= maxStocks) {
@@ -59,11 +59,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
     public void deleteProduct() {
         boolean state = false;
 
-        int count = inputHandlingInt("No. of products to be deleted : ");
+        int count = Main.inputHandlingInt("No. of products to be deleted : ");
 
         for (int i = 0; i < count; i++) {
             while (!state) {
-                String productID = inputHandlingString("Enter Product ID of the Product needed to be deleted :");
+                String productID = Main.inputHandlingString("Enter Product ID of the Product needed to be deleted :");
 
                 Iterator<Map.Entry<String, Product>> iterator = stocks.entrySet().iterator();
 
@@ -73,7 +73,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
                     if (product.getProductID().equals(productID)) {
                         System.out.print("Product ID " + product.getProductID());
-                        String confirmation = inputHandlingString(" Found. Confirmation to delete ? ( Y or N ) :");
+                        String confirmation = Main.inputHandlingString(" Found. Confirmation to delete ? ( Y or N ) :");
 
                         if ("Y".equalsIgnoreCase(confirmation)) {
                             System.out.println("------------------------------------------------");
@@ -144,21 +144,21 @@ public class WestminsterShoppingManager implements ShoppingManager {
     public Product inputProductDetails(int answer) {
         String ProductID;
 
-        do {ProductID = inputHandleProductID(inputHandlingString("Enter Product ID             : "));
+        do {ProductID = inputHandleProductID(Main.inputHandlingString("Enter Product ID             : "));
         } while (ProductID == null);
 
-        String ProductName = inputHandlingString("Enter Product Name           : ");
-        int ProductNOU = inputHandlingInt("Enter No. of available items : ");
-        double ProductPrice = inputHandlingDouble("Enter Product Price          : ");
+        String ProductName = Main.inputHandlingString("Enter Product Name           : ");
+        int ProductNOU = Main.inputHandlingInt("Enter No. of available items : ");
+        double ProductPrice = Main.inputHandlingDouble("Enter Product Price          : ");
 
         if (answer == 1){
-            String ProductBrand = inputHandlingString("Enter Product Brand          : ");
-            int ProductWarranty = inputHandlingInt("Enter Product Warranty       : ");
+            String ProductBrand = Main.inputHandlingString("Enter Product Brand          : ");
+            int ProductWarranty = Main.inputHandlingInt("Enter Product Warranty       : ");
 
             return new Electronics(ProductID, ProductName, ProductNOU, ProductPrice, ProductBrand, ProductWarranty);
         }else {
-            String ProductColor = inputHandlingString("Enter Product Color          : ");
-            String ProductSize = inputHandlingString("Enter Product Size           : ");
+            String ProductColor = Main.inputHandlingString("Enter Product Color          : ");
+            String ProductSize = Main.inputHandlingString("Enter Product Size           : ");
 
             return new Clothing(ProductID, ProductName, ProductNOU, ProductPrice, ProductColor, ProductSize);
         }
@@ -173,7 +173,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
             System.out.println("Error saving products to file: " + e.getMessage());
         }
         Main.ManagerConsoleContent();
-    } // TODO: 1/12/2024 create save functionality
+    }
 
     @Override
     public void loadProducts(){
@@ -185,56 +185,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
             e.printStackTrace(); // Add this line for debugging
         }
         Main.ManagerConsoleContent();
-    } // TODO: 1/12/2024 create load functionality
-
-    @Override
-    public String inputHandlingString(String input) {
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            try {
-                System.out.print(input);
-                return sc.next();
-            } catch (InputMismatchException e) {
-                sc.nextLine(); // Consume the invalid input
-                System.out.println("Invalid Datatype. Enter input Again!");
-            }
-        }
-    }
-
-    @Override
-    public int inputHandlingInt(String input) {
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            try {
-                System.out.print(input);
-                return sc.nextInt();
-            } catch (InputMismatchException e) {
-                sc.nextLine(); // Consume the invalid input
-                System.out.println("Invalid Datatype. Enter input Again!");
-            }
-        }
-    }
-
-    @Override
-    public double inputHandlingDouble(String input) {
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            try {
-                System.out.print(input);
-                return sc.nextDouble();
-            } catch (InputMismatchException e) {
-                sc.nextLine(); // Consume the invalid input
-                System.out.println("Invalid Datatype. Enter input Again!");
-            }
-        }
     }
 
     @Override
     public String inputHandleProductID(String ProductID){
-
         for (Map.Entry<String, Product> entry : stocks.entrySet()) {
             if (entry.getKey().equals(ProductID)) {
                 System.out.println("Entered Product ID already exists. Try Again !");
@@ -243,6 +197,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         }
         return ProductID;
     }
+
     public Map<String, Product> getStocks() {
         return stocks;
     }

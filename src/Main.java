@@ -1,6 +1,55 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class Main {
+    static public String inputHandlingString(String input) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print(input);
+                return sc.next();
+            } catch (InputMismatchException e) {
+                sc.nextLine(); // Consume the invalid input
+                System.out.println("Invalid Datatype. Enter input Again!");
+            }
+        }
+    }
+
+    static public int inputHandlingInt(String input) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print(input);
+                return sc.nextInt();
+            } catch (InputMismatchException e) {
+                sc.nextLine(); // Consume the invalid input
+                System.out.println("Invalid Datatype. Enter input Again!");
+            }
+        }
+    }
+
+    static public double inputHandlingDouble(String input) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print(input);
+                return sc.nextDouble();
+            } catch (InputMismatchException e) {
+                sc.nextLine(); // Consume the invalid input
+                System.out.println("Invalid Datatype. Enter input Again!");
+            }
+        }
+    }
+
     public static void ManagerConsoleContent(){
         WestminsterShoppingManager manager = new WestminsterShoppingManager();
+
+        System.out.println();
+        System.out.println("Welcome to Westminster Shopping Center - Manager Console");
+        System.out.println("--------------------------------------------------------");
 
         System.out.println("Select Your Option From The Menu");
         System.out.println();
@@ -14,7 +63,7 @@ public class Main {
 
         System.out.println();
 
-        int option = manager.inputHandlingInt("Enter Your Option : ");
+        int option = Main.inputHandlingInt("Enter Your Option : ");
         System.out.println();
 
         switch (option) {
@@ -34,8 +83,8 @@ public class Main {
                 manager.loadProducts();
                 break;
             case 6:
-                WestminsterShoppingGUI t = new WestminsterShoppingGUI();
-                t.hashMapToArrayList();
+//                WestminsterShoppingGUI t = new WestminsterShoppingGUI();
+//                t.hashMapToArrayList();
 //                WestminsterShoppingGUI.main(null);
                 break;
             default:
@@ -44,16 +93,34 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        boolean state = true;
 
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Welcome to Westminster Shopping Center - Manager Console");
-        System.out.println("--------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
+        System.out.println("----[][]----Welcome to Westminster Shopping Center----[][]----");
+        System.out.println("--------------------------------------------------------------");
         System.out.println();
 
-        ManagerConsoleContent();
+        while (state){
+            state = false;
+            int role = Main.inputHandlingInt("Are you a Customer or a Manager (1 or 2) ? : ");
 
-//        WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
+            switch (role){
+                case 1:
+                    //TODO : user functionality implementation
+                    //TODO : GUI Should start to run
+                    //WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
+                    //GUI.runGUI();
 
-//        GUI.runGUI();
+                    System.out.println("user path way");
+                    break;
+                case 2:
+                    ManagerConsoleContent();
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+                    System.out.println();
+                    state = true;
+            }
+        }
     }
 }
