@@ -138,74 +138,6 @@ public class WestminsterShoppingGUI {
         return scrollPane;
     }
 
-//    private void updateTable(JComboBox<String> categoryComboBox, JTable table, DefaultTableModel model, String selectedCategory) {
-//        List<Object[]> rowDataList = new ArrayList<>();
-//
-//        for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
-//            String productID = entry.getKey();
-//            Product product = entry.getValue();
-//
-//            String category;
-//            String information;
-//            Object[] rowData;
-//
-//            switch (selectedCategory) {
-//                case "All":
-//                    category = getCategoryString(product);
-//                    information = getCategoryInformation(product);
-//                    rowData = new Object[]{
-//                            product.getProductID(),
-//                            product.getProductName(),
-//                            category,
-//                            product.getProductPrice(),
-//                            information
-//                    };
-//                    rowDataList.add(rowData);
-//                    break;
-//
-//                case "Electronics":
-//                    if (product instanceof Electronics) {
-//                        category = "Electronics";
-//                        information = ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
-//                        rowData = new Object[]{
-//                                product.getProductID(),
-//                                product.getProductName(),
-//                                category,
-//                                product.getProductPrice(),
-//                                information
-//                        };
-//                        rowDataList.add(rowData);
-//                    }
-//                    break;
-//
-//                case "Clothing":
-//                    if (product instanceof Clothing) {
-//                        category = "Clothes";
-//                        information = ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
-//                        rowData = new Object[]{
-//                                product.getProductID(),
-//                                product.getProductName(),
-//                                category,
-//                                product.getProductPrice(),
-//                                information
-//                        };
-//                        rowDataList.add(rowData);
-//                    }
-//                    break;
-//
-//                default:
-//                    // Handle other cases as needed
-//                    break;
-//            }
-//        }
-//        // Clear existing rows in the table
-//        model.setRowCount(0);
-//        // Add all rows to the model
-//        for (Object[] rowData : rowDataList) {
-//            model.addRow(rowData);
-//        }
-//    }
-
     private void updateTable(JComboBox<String> categoryComboBox, JTable table, DefaultTableModel model, String selectedCategory) {
         List<Object[]> rowDataList = new ArrayList<>();
 
@@ -235,10 +167,7 @@ public class WestminsterShoppingGUI {
                     category = "Clothes";
                     information = ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
                 }
-                default -> {
-                    // Handle other cases as needed
-                    continue;
-                }
+                default -> {continue;}
             }
 
             rowData = new Object[]{
@@ -250,16 +179,11 @@ public class WestminsterShoppingGUI {
             };
             rowDataList.add(rowData);
         }
-
-        // Clear existing rows in the table
         model.setRowCount(0);
-
-        // Add all rows to the model
         for (Object[] rowData : rowDataList) {
             model.addRow(rowData);
         }
     }
-
 
     private String getCategoryString(Product product) {
         if (product instanceof Electronics) {
