@@ -1,7 +1,7 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class WestminsterShoppingGUI {
     private JFrame login;
@@ -95,26 +95,30 @@ public class WestminsterShoppingGUI {
     public JFrame productSelectInterface(){
         JFrame productSelect = new JFrame("Westminster Shopping Centre");
 
-        JPanel productSelectPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel productSelectPanel = new JPanel(new BorderLayout());
 
         JLabel categoryPanel = new JLabel("Select Product Category: ");
 
         String[] options = {"All", "Electronics", "Clothing"};
         JComboBox<String> categoryComboBox = new JComboBox<>(options);
 
-        JButton shoppingCartButton = new JButton("Sign In");
+        JButton shoppingCartButton = new JButton("Shopping Cart");
         shoppingCartButton.addActionListener(e -> {
             // Add signIn functionality here
             // For now, let's just display a message
 //            JOptionPane.showMessageDialog(productSelect, "Shopping Cart button clicked!");
             shoppingCart.setVisible(true);
             productSelectInterface.setVisible(false);
-
         });
 
-        productSelectPanel.add(categoryPanel);
-        productSelectPanel.add(categoryComboBox);
-        productSelectPanel.add(shoppingCartButton);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(categoryPanel);
+        buttonPanel.add(categoryComboBox);
+        buttonPanel.add(shoppingCartButton);
+
+        productSelectPanel.add(buttonPanel, BorderLayout.NORTH);
+        productSelectPanel.add(productTable(), BorderLayout.CENTER);
+//        productSelectPanel.add(shoppingCartButton);
 
         productSelect.add(productSelectPanel);
         productSelect.setSize(800,800);
@@ -124,8 +128,48 @@ public class WestminsterShoppingGUI {
 
     }
 
+    public JScrollPane productTable() {
+        String[] columnNames = {"Product ID", "Name", "Category", "Price(£)", "Information"};
+        String Category = null;
+        String Information = null;
+
+        DefaultTableModel model = new DefaultTableModel();
+        JTable table = new JTable(model);
+
+        // Add columns to the table
+        for (String columnName : columnNames) {
+            model.addColumn(columnName);
+        }
+
+
+
+
+
+        // Add data to the table
+        for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
+            Product product = entry.getValue();
+
+            if (product instanceof Electronics){
+                Category = "Electronics";
+                Information = ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
+            }else if(product instanceof Clothing) {
+                Category = "Clothes";
+                Information = ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
+            }
+            Object[] rowData = {product.getProductID(), product.getProductName(), Category, product.getProductPrice(), Information};
+            model.addRow(rowData);
+        }
+
+        // Wrap the table in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        return scrollPane;
+    }
+
+
+
     public JFrame shoppingCart(){
-        JFrame cart = new JFrame("Shoppning Cart");
+        JFrame cart = new JFrame("Shopping Cart");
 
         JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
@@ -139,6 +183,7 @@ public class WestminsterShoppingGUI {
 
         return cart;
     }
+
     public static void main(String[] args) {
         WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
 

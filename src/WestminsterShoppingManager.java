@@ -175,8 +175,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         Main.ManagerConsoleContent();
     }
 
-    @Override
-    public void loadProducts(){
+    static public void loadProducts(){
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dataFile))) {
             stocks = (Map<String, Product>) in.readObject();
             System.out.println("Products loaded from file.");
@@ -184,7 +183,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
             System.out.println("Error loading products from file: " + e.getMessage());
             e.printStackTrace(); // Add this line for debugging
         }
-        Main.ManagerConsoleContent();
     }
 
     @Override

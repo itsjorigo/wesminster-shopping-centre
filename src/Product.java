@@ -47,4 +47,5 @@ abstract public class Product implements Serializable {
     public void setProductPrice(double productPrice) {
         this.productPrice = productPrice;
     }
+
 }

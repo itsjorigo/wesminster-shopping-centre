@@ -100,6 +100,8 @@ public class Main {
         System.out.println("--------------------------------------------------------------");
         System.out.println();
 
+        WestminsterShoppingManager.loadProducts();
+
         while (state){
             state = false;
             int role = Main.inputHandlingInt("Are you a Customer or a Manager (1 or 2) ? : ");
