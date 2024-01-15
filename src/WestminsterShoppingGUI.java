@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class WestminsterShoppingGUI {
@@ -8,7 +9,8 @@ public class WestminsterShoppingGUI {
     private JFrame signIn;
     private JFrame productSelectInterface;
     private JFrame shoppingCart;
-
+    private Map<String, Electronics> electronicStocks = new HashMap<>();
+    private Map<String, Clothing> clothingStocks = new HashMap<>();
 
     public WestminsterShoppingGUI() {
         login = userLogin();
@@ -117,7 +119,7 @@ public class WestminsterShoppingGUI {
         buttonPanel.add(shoppingCartButton);
 
         productSelectPanel.add(buttonPanel, BorderLayout.NORTH);
-        productSelectPanel.add(productTable(), BorderLayout.CENTER);
+        productSelectPanel.add(productTable(categoryComboBox), BorderLayout.CENTER);
 //        productSelectPanel.add(shoppingCartButton);
 
         productSelect.add(productSelectPanel);
@@ -128,7 +130,7 @@ public class WestminsterShoppingGUI {
 
     }
 
-    public JScrollPane productTable() {
+    public JScrollPane productTable(JComboBox<String> categoryComboBox) {
         String[] columnNames = {"Product ID", "Name", "Category", "Price(£)", "Information"};
         String Category = null;
         String Information = null;
@@ -141,20 +143,21 @@ public class WestminsterShoppingGUI {
             model.addColumn(columnName);
         }
 
-
-
-
-
         // Add data to the table
         for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
+            String productID = entry.getKey();
             Product product = entry.getValue();
 
             if (product instanceof Electronics){
                 Category = "Electronics";
                 Information = ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
+                electronicStocks.put(productID, (Electronics) product);
+
             }else if(product instanceof Clothing) {
                 Category = "Clothes";
                 Information = ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
+                clothingStocks.put(productID,(Clothing) product);
+
             }
             Object[] rowData = {product.getProductID(), product.getProductName(), Category, product.getProductPrice(), Information};
             model.addRow(rowData);
@@ -165,8 +168,6 @@ public class WestminsterShoppingGUI {
 
         return scrollPane;
     }
-
-
 
     public JFrame shoppingCart(){
         JFrame cart = new JFrame("Shopping Cart");
