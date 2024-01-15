@@ -1,7 +1,11 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WestminsterShoppingGUI {
@@ -32,19 +36,14 @@ public class WestminsterShoppingGUI {
 
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(e -> {
-            // Add login functionality here
-            // For now, let's just display a message
-//            JOptionPane.showMessageDialog(login, "Login button clicked!");
             productSelectInterface.setVisible(true);
             login.setVisible(false);
         });
 
         JButton signupButton = new JButton("Signup");
         signupButton.addActionListener(e -> {
-            // Add signup functionality here
-            // For now, let's just display a message
-            signIn.setVisible(true); // Show the signIn frame
-            login.setVisible(false); // Hide the login frame
+            signIn.setVisible(true);
+            login.setVisible(false);
         });
 
         loginPanel.add(userNamePanel);
@@ -74,8 +73,6 @@ public class WestminsterShoppingGUI {
 
         JButton signInButton = new JButton("Sign In");
         signInButton.addActionListener(e -> {
-            // Add signIn functionality here
-            // For now, let's just display a message
             JOptionPane.showMessageDialog(signIn, "SignIn button clicked!");
         });
 
@@ -88,88 +85,145 @@ public class WestminsterShoppingGUI {
         signInPanel.add(signInButton);
 
         signIn.add(signInPanel);
-        signIn.setSize(300, 250); // Adjusted the height
-        signIn.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only the signIn frame, not the entire application
+        signIn.setSize(300, 250);
+        signIn.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         return signIn;
     }
 
-    public JFrame productSelectInterface(){
+    public JFrame productSelectInterface() {
         JFrame productSelect = new JFrame("Westminster Shopping Centre");
 
         JPanel productSelectPanel = new JPanel(new BorderLayout());
 
-        JLabel categoryPanel = new JLabel("Select Product Category: ");
+        JLabel categoryLabel = new JLabel("Select Product Category: ");
 
         String[] options = {"All", "Electronics", "Clothing"};
         JComboBox<String> categoryComboBox = new JComboBox<>(options);
 
         JButton shoppingCartButton = new JButton("Shopping Cart");
         shoppingCartButton.addActionListener(e -> {
-            // Add signIn functionality here
-            // For now, let's just display a message
-//            JOptionPane.showMessageDialog(productSelect, "Shopping Cart button clicked!");
             shoppingCart.setVisible(true);
             productSelectInterface.setVisible(false);
         });
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(categoryPanel);
+        buttonPanel.add(categoryLabel);
         buttonPanel.add(categoryComboBox);
         buttonPanel.add(shoppingCartButton);
 
         productSelectPanel.add(buttonPanel, BorderLayout.NORTH);
         productSelectPanel.add(productTable(categoryComboBox), BorderLayout.CENTER);
-//        productSelectPanel.add(shoppingCartButton);
 
         productSelect.add(productSelectPanel);
-        productSelect.setSize(800,800);
+        productSelect.setSize(800, 800);
         productSelect.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         return productSelect;
-
     }
 
     public JScrollPane productTable(JComboBox<String> categoryComboBox) {
         String[] columnNames = {"Product ID", "Name", "Category", "Price(£)", "Information"};
-        String Category = null;
-        String Information = null;
 
         DefaultTableModel model = new DefaultTableModel();
         JTable table = new JTable(model);
 
-        // Add columns to the table
         for (String columnName : columnNames) {
             model.addColumn(columnName);
         }
 
-        // Add data to the table
-        for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
-            String productID = entry.getKey();
-            Product product = entry.getValue();
-
-            if (product instanceof Electronics){
-                Category = "Electronics";
-                Information = ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
-                electronicStocks.put(productID, (Electronics) product);
-
-            }else if(product instanceof Clothing) {
-                Category = "Clothes";
-                Information = ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
-                clothingStocks.put(productID,(Clothing) product);
-
-            }
-            Object[] rowData = {product.getProductID(), product.getProductName(), Category, product.getProductPrice(), Information};
-            model.addRow(rowData);
-        }
-
-        // Wrap the table in a JScrollPane
         JScrollPane scrollPane = new JScrollPane(table);
+
+        categoryComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateTable(categoryComboBox, table, model);
+            }
+        });
 
         return scrollPane;
     }
 
-    public JFrame shoppingCart(){
+    private void updateTable(JComboBox<String> categoryComboBox, JTable table, DefaultTableModel model) {
+        List<Object[]> rowDataList = new ArrayList<>();
+
+        String selectedCategory = (String) categoryComboBox.getSelectedItem();
+
+        for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
+            String productID = entry.getKey();
+            Product product = entry.getValue();
+
+            String category;
+            String information;
+            Object[] rowData;
+
+            switch (selectedCategory) {
+                case "All":
+                    if (product instanceof Electronics) {
+                        category = "Electronics";
+                        information = ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
+                    } else if (product instanceof Clothing) {
+                        category = "Clothes";
+                        information = ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
+                    } else {
+                        // Handle other types if any
+                        continue;
+                    }
+                    rowData = new Object[]{
+                            product.getProductID(),
+                            product.getProductName(),
+                            category,
+                            product.getProductPrice(),
+                            information
+                    };
+                    rowDataList.add(rowData);
+                    break;
+
+                case "Electronics":
+                    if (product instanceof Electronics) {
+                        category = "Electronics";
+                        information = ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
+                        electronicStocks.put(productID, (Electronics) product);
+                        rowData = new Object[]{
+                                product.getProductID(),
+                                product.getProductName(),
+                                category,
+                                product.getProductPrice(),
+                                information
+                        };
+                        rowDataList.add(rowData);
+                    }
+                    break;
+
+                case "Clothing":
+                    if (product instanceof Clothing) {
+                        category = "Clothes";
+                        information = ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
+                        clothingStocks.put(productID, (Clothing) product);
+                        rowData = new Object[]{
+                                product.getProductID(),
+                                product.getProductName(),
+                                category,
+                                product.getProductPrice(),
+                                information
+                        };
+                        rowDataList.add(rowData);
+                    }
+                    break;
+
+                default:
+                    // Handle other cases as needed
+                    break;
+            }
+        }
+
+        // Add all rows to the model
+        for (Object[] rowData : rowDataList) {
+            model.addRow(rowData);
+        }
+    }
+
+    public JFrame shoppingCart() {
         JFrame cart = new JFrame("Shopping Cart");
 
         JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -187,11 +241,11 @@ public class WestminsterShoppingGUI {
 
     public static void main(String[] args) {
         WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
-
         JFrame login = GUI.login;
 
-        login.setSize(300, 150); // Adjusted the height
+        login.setSize(300, 150);
         login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         login.setVisible(true);
     }
 }
+
