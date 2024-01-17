@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class WestminsterShoppingGUI {
     private JFrame login;
@@ -216,16 +218,18 @@ public class WestminsterShoppingGUI {
     }
 
     public JPanel selectedProductsDetails() {
-        JPanel selectedProductsDetails = new JPanel(new GridLayout(0, 1)); // GridLayout with a single column
+        JPanel selectedProductsDetails = new JPanel(new GridLayout(0, 1));
         selectedProductsDetails.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 10));
         JLabel selectedProductsLabel = new JLabel("Selected Product - Details");
+
+
 
         JLabel productIDLabel = new JLabel("Product ID : ");
         JLabel CategoryLabel = new JLabel("Category : ");
         JLabel NameLabel = new JLabel("Name : ");
         JLabel SizeLabel = new JLabel("Size : ");
         JLabel ColourLabel = new JLabel("Colour : ");
-        JLabel ItemsAvailbleLabel = new JLabel("Items Available : ");
+        JLabel ItemsAvailableLabel = new JLabel("Items Available : ");
 
         selectedProductsDetails.add(selectedProductsLabel);
         selectedProductsDetails.add(productIDLabel);
@@ -233,7 +237,7 @@ public class WestminsterShoppingGUI {
         selectedProductsDetails.add(NameLabel);
         selectedProductsDetails.add(SizeLabel);
         selectedProductsDetails.add(ColourLabel);
-        selectedProductsDetails.add(ItemsAvailbleLabel);
+        selectedProductsDetails.add(ItemsAvailableLabel);
 
         return selectedProductsDetails;
     }
