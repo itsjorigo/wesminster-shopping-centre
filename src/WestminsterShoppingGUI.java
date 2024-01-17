@@ -138,6 +138,7 @@ public class WestminsterShoppingGUI {
         for (String columnName : columnNames) {
             model.addColumn(columnName);
         }
+
         JScrollPane scrollPane = new JScrollPane(table);
         categoryComboBox.addActionListener(new ActionListener() {
             @Override
@@ -150,7 +151,7 @@ public class WestminsterShoppingGUI {
     }
 
     public void updateTable(DefaultTableModel model, String selectedCategory) {
-        List<Object[]> rowDataList = new ArrayList<>();
+        List<Object[]> tableDataList = new ArrayList<>();
 
         for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
             Product product = entry.getValue();
@@ -188,10 +189,10 @@ public class WestminsterShoppingGUI {
                     product.getProductPrice(),
                     information
             };
-            rowDataList.add(rowData);
+            tableDataList.add(rowData);
         }
         model.setRowCount(0);
-        for (Object[] rowData : rowDataList) {
+        for (Object[] rowData : tableDataList) {
             model.addRow(rowData);
         }
     }
