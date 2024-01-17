@@ -109,8 +109,17 @@ public class WestminsterShoppingGUI {
         buttonPanel.add(categoryComboBox);
         buttonPanel.add(shoppingCartButton);
 
+        JScrollPane productTableScrollPane = productTable(categoryComboBox);
+        productTableScrollPane.setPreferredSize(new Dimension(800, 400));
+        // Set preferred size for the table panel
+
+        JPanel selectedProductsDetailsPanel = selectedProductsDetails();
+        selectedProductsDetailsPanel.setPreferredSize(new Dimension(800, 300));
+        // Set preferred size for the details panel
+
         productSelectPanel.add(buttonPanel, BorderLayout.NORTH);
-        productSelectPanel.add(productTable(categoryComboBox), BorderLayout.CENTER);
+        productSelectPanel.add(productTableScrollPane, BorderLayout.CENTER);
+        productSelectPanel.add(selectedProductsDetailsPanel, BorderLayout.SOUTH);
 
         productSelect.add(productSelectPanel);
         productSelect.setSize(800, 800);
@@ -124,6 +133,8 @@ public class WestminsterShoppingGUI {
         DefaultTableModel model = new DefaultTableModel();
         JTable table = new JTable(model);
 
+        table.setDefaultEditor(Object.class, null);
+
         for (String columnName : columnNames) {
             model.addColumn(columnName);
         }
@@ -132,13 +143,13 @@ public class WestminsterShoppingGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
-                updateTable(categoryComboBox, table, model, selectedCategory);
+                updateTable(model, selectedCategory);
             }
         });
         return scrollPane;
     }
 
-    private void updateTable(JComboBox<String> categoryComboBox, JTable table, DefaultTableModel model, String selectedCategory) {
+    public void updateTable(DefaultTableModel model, String selectedCategory) {
         List<Object[]> rowDataList = new ArrayList<>();
 
         for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
@@ -185,7 +196,7 @@ public class WestminsterShoppingGUI {
         }
     }
 
-    private String getCategoryString(Product product) {
+    public String getCategoryString(Product product) {
         if (product instanceof Electronics) {
             return "Electronics";
         } else if (product instanceof Clothing) {
@@ -194,7 +205,7 @@ public class WestminsterShoppingGUI {
         return "";
     }
 
-    private String getCategoryInformation(Product product) {
+    public String getCategoryInformation(Product product) {
         if (product instanceof Electronics) {
             return ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
         } else if (product instanceof Clothing) {
@@ -202,6 +213,30 @@ public class WestminsterShoppingGUI {
         }
         return "";
     }
+
+    public JPanel selectedProductsDetails() {
+        JPanel selectedProductsDetails = new JPanel(new GridLayout(0, 1)); // GridLayout with a single column
+        selectedProductsDetails.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 10));
+        JLabel selectedProductsLabel = new JLabel("Selected Product - Details");
+
+        JLabel productIDLabel = new JLabel("Product ID : ");
+        JLabel CategoryLabel = new JLabel("Category : ");
+        JLabel NameLabel = new JLabel("Name : ");
+        JLabel SizeLabel = new JLabel("Size : ");
+        JLabel ColourLabel = new JLabel("Colour : ");
+        JLabel ItemsAvailbleLabel = new JLabel("Items Available : ");
+
+        selectedProductsDetails.add(selectedProductsLabel);
+        selectedProductsDetails.add(productIDLabel);
+        selectedProductsDetails.add(CategoryLabel);
+        selectedProductsDetails.add(NameLabel);
+        selectedProductsDetails.add(SizeLabel);
+        selectedProductsDetails.add(ColourLabel);
+        selectedProductsDetails.add(ItemsAvailbleLabel);
+
+        return selectedProductsDetails;
+    }
+
 
     public JFrame shoppingCart() {
         JFrame cart = new JFrame("Shopping Cart");
