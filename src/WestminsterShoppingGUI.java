@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -150,7 +151,7 @@ public class WestminsterShoppingGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
-                updateTable(model, selectedCategory);
+                updateTable(model, selectedCategory, table);
             }
         });
 
@@ -170,7 +171,7 @@ public class WestminsterShoppingGUI {
         return scrollPane;
     }
 
-    public void updateTable(DefaultTableModel model, String selectedCategory) {
+    public void updateTable(DefaultTableModel model, String selectedCategory, JTable table) {
         List<Object[]> tableDataList = new ArrayList<>();
 
         for (Map.Entry<String, Product> entry : WestminsterShoppingManager.stocks.entrySet()) {
@@ -201,7 +202,6 @@ public class WestminsterShoppingGUI {
                 }
                 default -> {continue;}
             }
-
             rowData = new Object[]{
                     product.getProductID(),
                     product.getProductName(),
