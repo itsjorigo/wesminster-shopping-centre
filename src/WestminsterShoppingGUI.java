@@ -4,20 +4,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class WestminsterShoppingGUI {
+
+    public Collection<Product> productValues = WestminsterShoppingManager.stocks.values();
     private JFrame login;
     private JFrame signIn;
     private JFrame productSelectInterface;
     private JFrame shoppingCart;
+    private JPanel selectedProductsDetailsPanel;
 
     public WestminsterShoppingGUI() {
         login = userLogin();
         signIn = userSignIn();
+        selectedProductsDetailsPanel = new JPanel(); // Initialize the panel here
         productSelectInterface = productSelectInterface();
         shoppingCart = shoppingCart();
     }
@@ -113,11 +118,9 @@ public class WestminsterShoppingGUI {
 
         JScrollPane productTableScrollPane = productTable(categoryComboBox);
         productTableScrollPane.setPreferredSize(new Dimension(800, 400));
-        // Set preferred size for the table panel
 
-        JPanel selectedProductsDetailsPanel = selectedProductsDetails();
         selectedProductsDetailsPanel.setPreferredSize(new Dimension(800, 300));
-        // Set preferred size for the details panel
+        selectedProductsDetailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         productSelectPanel.add(buttonPanel, BorderLayout.NORTH);
         productSelectPanel.add(productTableScrollPane, BorderLayout.CENTER);
@@ -149,6 +152,20 @@ public class WestminsterShoppingGUI {
                 updateTable(model, selectedCategory);
             }
         });
+
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = table.getSelectedRow();
+                    if (selectedRow != -1) {
+                        Object productId = table.getValueAt(selectedRow, 0);
+                        displaySelectedProductsDetails(productId);
+                    }
+                }
+            }
+        });
+
         return scrollPane;
     }
 
@@ -217,31 +234,39 @@ public class WestminsterShoppingGUI {
         return "";
     }
 
-    public JPanel selectedProductsDetails() {
-        JPanel selectedProductsDetails = new JPanel(new GridLayout(0, 1));
-        selectedProductsDetails.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 10));
-        JLabel selectedProductsLabel = new JLabel("Selected Product - Details");
+    public void displaySelectedProductsDetails(Object productId) {
+        selectedProductsDetailsPanel.removeAll();
 
+        for (Product product : productValues) {
+            if (productId.equals(product.getProductID())) {
+                JLabel productIDLabel = new JLabel("Product ID: " + product.getProductID());
+                JLabel categoryLabel = new JLabel("Category: " + getCategoryString(product));
+                JLabel nameLabel = new JLabel("Name: " + product.getProductName());
+                JLabel itemsAvailableLabel = new JLabel("Items Available: " + product.getProductNOU());
 
+                selectedProductsDetailsPanel.add(productIDLabel);
+                selectedProductsDetailsPanel.add(categoryLabel);
+                selectedProductsDetailsPanel.add(nameLabel);
 
-        JLabel productIDLabel = new JLabel("Product ID : ");
-        JLabel CategoryLabel = new JLabel("Category : ");
-        JLabel NameLabel = new JLabel("Name : ");
-        JLabel SizeLabel = new JLabel("Size : ");
-        JLabel ColourLabel = new JLabel("Colour : ");
-        JLabel ItemsAvailableLabel = new JLabel("Items Available : ");
+                if (product instanceof Electronics) {
+                    JLabel brandLabel = new JLabel("Brand: " + ((Electronics) product).getProductBrand());
+                    JLabel warrantyLabel = new JLabel("Warranty: " + ((Electronics) product).getProductWarranty());
+                    selectedProductsDetailsPanel.add(brandLabel);
+                    selectedProductsDetailsPanel.add(warrantyLabel);
+                } else if (product instanceof Clothing) {
+                    JLabel sizeLabel = new JLabel("Size: " + ((Clothing) product).getProductSize());
+                    JLabel colorLabel = new JLabel("Colour: " + ((Clothing) product).getProductColor());
+                    selectedProductsDetailsPanel.add(sizeLabel);
+                    selectedProductsDetailsPanel.add(colorLabel);
+                }
 
-        selectedProductsDetails.add(selectedProductsLabel);
-        selectedProductsDetails.add(productIDLabel);
-        selectedProductsDetails.add(CategoryLabel);
-        selectedProductsDetails.add(NameLabel);
-        selectedProductsDetails.add(SizeLabel);
-        selectedProductsDetails.add(ColourLabel);
-        selectedProductsDetails.add(ItemsAvailableLabel);
-
-        return selectedProductsDetails;
+                selectedProductsDetailsPanel.add(itemsAvailableLabel);
+                selectedProductsDetailsPanel.revalidate();
+                selectedProductsDetailsPanel.repaint();
+                break;
+            }
+        }
     }
-
 
     public JFrame shoppingCart() {
         JFrame cart = new JFrame("Shopping Cart");
@@ -268,4 +293,3 @@ public class WestminsterShoppingGUI {
         login.setVisible(true);
     }
 }
-
