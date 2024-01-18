@@ -253,14 +253,17 @@ public class WestminsterShoppingGUI {
                     JLabel warrantyLabel = new JLabel("Warranty: " + ((Electronics) product).getProductWarranty());
                     selectedProductsDetailsPanel.add(brandLabel);
                     selectedProductsDetailsPanel.add(warrantyLabel);
+
                 } else if (product instanceof Clothing) {
                     JLabel sizeLabel = new JLabel("Size: " + ((Clothing) product).getProductSize());
                     JLabel colorLabel = new JLabel("Colour: " + ((Clothing) product).getProductColor());
                     selectedProductsDetailsPanel.add(sizeLabel);
                     selectedProductsDetailsPanel.add(colorLabel);
+
                 }
 
                 selectedProductsDetailsPanel.add(itemsAvailableLabel);
+
                 selectedProductsDetailsPanel.revalidate();
                 selectedProductsDetailsPanel.repaint();
                 break;
