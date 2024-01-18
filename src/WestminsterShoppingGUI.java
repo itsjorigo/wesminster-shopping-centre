@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -162,7 +161,7 @@ public class WestminsterShoppingGUI {
                     int selectedRow = table.getSelectedRow();
                     if (selectedRow != -1) {
                         Object productId = table.getValueAt(selectedRow, 0);
-                        displaySelectedProductsDetails(productId);
+                        displaySelectedProductsDetails(productId, model);
                     }
                 }
             }
@@ -235,9 +234,8 @@ public class WestminsterShoppingGUI {
         return "";
     }
 
-    public void displaySelectedProductsDetails(Object productId) {
+    public void displaySelectedProductsDetails(Object productId, DefaultTableModel model) {
         selectedProductsDetailsPanel.removeAll();
-
         for (Product product : productValues) {
             if (productId.equals(product.getProductID())) {
                 JLabel productIDLabel = new JLabel("Product ID: " + product.getProductID());
@@ -263,7 +261,17 @@ public class WestminsterShoppingGUI {
 
                 }
 
+                JButton addToCart = new JButton("Add To Shopping Cart");
+
+
                 selectedProductsDetailsPanel.add(itemsAvailableLabel);
+                selectedProductsDetailsPanel.add(addToCart);
+                addToCart.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog(null, "Button clicked!");
+                    }
+                });
 
                 selectedProductsDetailsPanel.revalidate();
                 selectedProductsDetailsPanel.repaint();
