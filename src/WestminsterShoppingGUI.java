@@ -260,12 +260,11 @@ public class WestminsterShoppingGUI {
                     selectedProductsDetailsPanel.add(colorLabel);
 
                 }
+                selectedProductsDetailsPanel.add(itemsAvailableLabel);
 
                 JButton addToCart = new JButton("Add To Shopping Cart");
-
-
-                selectedProductsDetailsPanel.add(itemsAvailableLabel);
                 selectedProductsDetailsPanel.add(addToCart);
+
                 addToCart.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
