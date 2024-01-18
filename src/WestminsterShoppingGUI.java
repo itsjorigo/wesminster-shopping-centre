@@ -119,6 +119,7 @@ public class WestminsterShoppingGUI {
         JScrollPane productTableScrollPane = productTable(categoryComboBox);
         productTableScrollPane.setPreferredSize(new Dimension(800, 400));
 
+        selectedProductsDetailsPanel = new JPanel (new GridLayout(0,1));
         selectedProductsDetailsPanel.setPreferredSize(new Dimension(800, 300));
         selectedProductsDetailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
