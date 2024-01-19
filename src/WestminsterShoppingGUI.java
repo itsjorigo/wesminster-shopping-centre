@@ -23,7 +23,6 @@ public class WestminsterShoppingGUI {
         login = userLogin();
         signIn = userSignIn();
         selectedProductsDetailsPanel = new JPanel(); // Initialize the panel here
-//        productSelectInterface = productSelectInterface();
         shoppingCart = shoppingCart();
     }
 
@@ -70,17 +69,6 @@ public class WestminsterShoppingGUI {
 
         login.add(loginPanel);
         return login;
-    }
-
-    public User userValidation(String Username, String Password){
-        boolean validated = false;
-        for (User user : User.getUsers()){
-            if (Username.equals(user.getUsername()) && Password.equals(user.getPassword())){
-                validated = true;
-                return user;
-            }
-        }
-        return null;
     }
 
     public JFrame userSignIn() {
@@ -162,6 +150,17 @@ public class WestminsterShoppingGUI {
             productSelectInterface(user).setVisible(true);
             signIn.setVisible(false);
         }
+    }
+
+    public User userValidation(String Username, String Password){
+        boolean validated = false;
+        for (User user : User.getUsers()){
+            if (Username.equals(user.getUsername()) && Password.equals(user.getPassword())){
+                validated = true;
+                return user;
+            }
+        }
+        return null;
     }
 
     public JFrame productSelectInterface(User user) {
@@ -354,9 +353,27 @@ public class WestminsterShoppingGUI {
 
         JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        JLabel cartLabel = new JLabel("Shopping Cart");
+        DefaultTableModel model = new DefaultTableModel();
+        JTable table = new JTable(model);
 
-        cartPanel.add(cartLabel);
+        String[] columnNames = {"Product", "Quantity", "Price"};
+
+        table.setDefaultEditor(Object.class, null);
+
+        for (String columnName : columnNames) {
+            model.addColumn(columnName);
+        }
+
+        Object[] tabledata= {"B201, Leggings, M, Black", "2", "45.80"};
+        Object[] tabledata1= {"B201, Leggings, M, Black", "2", "45.80"};
+
+        model.addRow(tabledata);
+        model.addRow(tabledata1);
+
+
+//        cartPanel.add(cartLabel);
+        cartPanel.add(table);
+
 
         cart.add(cartPanel);
         cart.setSize(400, 400);
