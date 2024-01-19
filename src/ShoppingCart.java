@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingCart extends JFrame {
+public class ShoppingCart {
     private List<String[]> items;
 
     public ShoppingCart() {
