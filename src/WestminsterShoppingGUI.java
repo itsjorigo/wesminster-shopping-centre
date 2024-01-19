@@ -77,7 +77,24 @@ public class WestminsterShoppingGUI {
 
         JButton signInButton = new JButton("Sign In");
         signInButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(signIn, "SignIn button clicked!");
+            // Get the text content from the fields
+            String inputUsername = userNameField.getText();
+            String inputPassword1 = new String(passwordField1.getPassword());
+            String inputPassword2 = new String(passwordField2.getPassword());
+
+            // Check if fields are not empty
+            if (!inputUsername.equals("") && !inputPassword1.equals("") && !inputPassword2.equals("")) {
+                boolean fieldEmpty = true;
+
+                if (User.getUsers() != null) {
+                    userRegistration(inputUsername, inputPassword1, inputPassword2, fieldEmpty);
+                }else {
+                    User user = new User(null,"admin", "admin");
+                    userRegistration(inputUsername, inputPassword1, inputPassword2, fieldEmpty);
+                }
+            } else {
+                JOptionPane.showMessageDialog(signIn, "Fields can't be empty !");
+            }
         });
 
         signInPanel.add(userNamePanel);
@@ -93,6 +110,28 @@ public class WestminsterShoppingGUI {
         signIn.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         return signIn;
+    }
+
+    public void userRegistration(String inputUsername, String inputPassword1, String inputPassword2, boolean fieldEmpty){
+        for (User user : User.getUsers()) {
+            // Correct comparison with inputUsername
+            if (inputUsername.equals(user.getUsername())) {
+                JOptionPane.showMessageDialog(signIn, "Username already exists !");
+                fieldEmpty = false;
+                break;
+            }
+
+            // Correct comparison with inputPassword1 and inputPassword2
+            if (!inputPassword1.equals(inputPassword2)) {
+                JOptionPane.showMessageDialog(signIn, "Passwords don't match !");
+                fieldEmpty = false;
+                break;
+            }
+        }
+        if (fieldEmpty) {
+            User user = new User(null, inputUsername, inputPassword1);
+            JOptionPane.showMessageDialog(signIn, "You're registered. Welcome !");
+        }
     }
 
     public JFrame productSelectInterface() {
@@ -268,7 +307,7 @@ public class WestminsterShoppingGUI {
                 addToCart.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(null, "Button clicked!");
+                        JOptionPane.showMessageDialog(null, "Product added successfully !");
                     }
                 });
 
