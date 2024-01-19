@@ -131,6 +131,8 @@ public class WestminsterShoppingGUI {
         if (fieldEmpty) {
             User user = new User(null, inputUsername, inputPassword1);
             JOptionPane.showMessageDialog(signIn, "You're registered. Welcome !");
+            productSelectInterface.setVisible(true);
+            signIn.setVisible(false);
         }
     }
 
