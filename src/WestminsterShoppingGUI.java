@@ -157,6 +157,7 @@ public class WestminsterShoppingGUI {
         }
         if (fieldEmpty) {
             User user = new User(null, inputUsername, inputPassword1);
+            User.setUsers(user);
             JOptionPane.showMessageDialog(signIn, "You're registered. Welcome !");
             productSelectInterface(user).setVisible(true);
             signIn.setVisible(false);
@@ -184,7 +185,7 @@ public class WestminsterShoppingGUI {
         buttonPanel.add(categoryComboBox);
         buttonPanel.add(shoppingCartButton);
 
-        JScrollPane productTableScrollPane = productTable(categoryComboBox);
+        JScrollPane productTableScrollPane = productTable(categoryComboBox, user);
         productTableScrollPane.setPreferredSize(new Dimension(800, 400));
 
         selectedProductsDetailsPanel = new JPanel (new GridLayout(0,1));
@@ -201,7 +202,7 @@ public class WestminsterShoppingGUI {
         return productSelect;
     }
 
-    public JScrollPane productTable(JComboBox<String> categoryComboBox) {
+    public JScrollPane productTable(JComboBox<String> categoryComboBox,User user) {
         String[] columnNames = {"Product ID", "Name", "Category", "Price(£)", "Information"};
 
         DefaultTableModel model = new DefaultTableModel();
@@ -229,7 +230,7 @@ public class WestminsterShoppingGUI {
                     int selectedRow = table.getSelectedRow();
                     if (selectedRow != -1) {
                         Object productId = table.getValueAt(selectedRow, 0);
-                        displaySelectedProductsDetails(productId, model);
+                        displaySelectedProductsDetails(productId, model, user);
                     }
                 }
             }
@@ -302,7 +303,7 @@ public class WestminsterShoppingGUI {
         return "";
     }
 
-    public void displaySelectedProductsDetails(Object productId, DefaultTableModel model) {
+    public void displaySelectedProductsDetails(Object productId, DefaultTableModel model, User user) {
         selectedProductsDetailsPanel.removeAll();
         for (Product product : productValues) {
             if (productId.equals(product.getProductID())) {
@@ -336,6 +337,7 @@ public class WestminsterShoppingGUI {
                 addToCart.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        user.setProductHistory(product);
                         JOptionPane.showMessageDialog(null, "Product added successfully !");
                     }
                 });

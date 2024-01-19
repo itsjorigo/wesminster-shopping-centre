@@ -14,20 +14,22 @@ public class User {
     }
 
     public static ArrayList<User> getUsers() {
-        if (users == null) { users = new ArrayList<>(); }
+        if (users == null) {
+            users = new ArrayList<>();
+        }
         return users;
     }
 
-    public static void setUsers(ArrayList<User> users) {
-        User.users = users;
+    public static void setUsers(User user) {
+        users.add(user);
     }
 
     public ArrayList<Product> getProductHistory() {
         return productHistory;
     }
 
-    public void setProductHistory(ArrayList<Product> productHistory) {
-        this.productHistory = productHistory;
+    public void setProductHistory(Product product) {
+        productHistory.add(product);
     }
 
     public String getUsername() {
