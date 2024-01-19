@@ -23,7 +23,7 @@ public class WestminsterShoppingGUI {
         login = userLogin();
         signIn = userSignIn();
         selectedProductsDetailsPanel = new JPanel(); // Initialize the panel here
-        productSelectInterface = productSelectInterface();
+//        productSelectInterface = productSelectInterface();
         shoppingCart = shoppingCart();
     }
 
@@ -32,16 +32,27 @@ public class WestminsterShoppingGUI {
 
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        JLabel userNamePanel = new JLabel("Username: ");
+        JLabel userNameLabel = new JLabel("Username: ");
         JTextField userNameField = new JTextField(20);
 
-        JLabel passwordPanel = new JLabel("Password: ");
+        JLabel passwordLabel = new JLabel("Password: ");
         JPasswordField passwordField = new JPasswordField(20);
 
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(e -> {
-            productSelectInterface.setVisible(true);
-            login.setVisible(false);
+            String username = userNameField.getText();
+            String password = new String(passwordField.getPassword());
+
+            User validatedUser = userValidation(username, password);
+
+            if (validatedUser != null) {
+                productSelectInterface(validatedUser).setVisible(true);
+                login.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
+                userNameField.setText("");
+                passwordField.setText("");
+            }
         });
 
         JButton signupButton = new JButton("Signup");
@@ -50,9 +61,9 @@ public class WestminsterShoppingGUI {
             login.setVisible(false);
         });
 
-        loginPanel.add(userNamePanel);
+        loginPanel.add(userNameLabel);
         loginPanel.add(userNameField);
-        loginPanel.add(passwordPanel);
+        loginPanel.add(passwordLabel);
         loginPanel.add(passwordField);
         loginPanel.add(loginButton);
         loginPanel.add(signupButton);
@@ -61,18 +72,29 @@ public class WestminsterShoppingGUI {
         return login;
     }
 
+    public User userValidation(String Username, String Password){
+        boolean validated = false;
+        for (User user : User.getUsers()){
+            if (Username.equals(user.getUsername()) && Password.equals(user.getPassword())){
+                validated = true;
+                return user;
+            }
+        }
+        return null;
+    }
+
     public JFrame userSignIn() {
         JFrame signIn = new JFrame("User SignIn Page");
 
         JPanel signInPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        JLabel userNamePanel = new JLabel("Enter a username: ");
+        JLabel userNameLabel = new JLabel("Enter a username: ");
         JTextField userNameField = new JTextField(20);
 
-        JLabel passwordPanel1 = new JLabel("Enter a password: ");
+        JLabel passwordLabel1 = new JLabel("Enter a password: ");
         JPasswordField passwordField1 = new JPasswordField(20);
 
-        JLabel passwordPanel2 = new JLabel("Enter password again: ");
+        JLabel passwordLabel2 = new JLabel("Enter password again: ");
         JPasswordField passwordField2 = new JPasswordField(20);
 
         JButton signInButton = new JButton("Sign In");
@@ -85,23 +107,28 @@ public class WestminsterShoppingGUI {
             // Check if fields are not empty
             if (!inputUsername.equals("") && !inputPassword1.equals("") && !inputPassword2.equals("")) {
                 boolean fieldEmpty = true;
-
-                if (User.getUsers() != null) {
-                    userRegistration(inputUsername, inputPassword1, inputPassword2, fieldEmpty);
+                if (inputPassword1.equals(inputPassword2)) {
+                    if (User.getUsers() != null) {
+                        userRegistration(inputUsername, inputPassword1, inputPassword2, fieldEmpty);
+                    } else {
+                        User user = new User(null, "admin", "admin");
+                        userRegistration(inputUsername, inputPassword1, inputPassword2, fieldEmpty);
+                    }
                 }else {
-                    User user = new User(null,"admin", "admin");
-                    userRegistration(inputUsername, inputPassword1, inputPassword2, fieldEmpty);
+                    JOptionPane.showMessageDialog(null, "Passwords doesn't match. Please try again.");
+                    passwordField1.setText("");
+                    passwordField2.setText("");
                 }
             } else {
                 JOptionPane.showMessageDialog(signIn, "Fields can't be empty !");
             }
         });
 
-        signInPanel.add(userNamePanel);
+        signInPanel.add(userNameLabel);
         signInPanel.add(userNameField);
-        signInPanel.add(passwordPanel1);
+        signInPanel.add(passwordLabel1);
         signInPanel.add(passwordField1);
-        signInPanel.add(passwordPanel2);
+        signInPanel.add(passwordLabel2);
         signInPanel.add(passwordField2);
         signInPanel.add(signInButton);
 
@@ -131,12 +158,12 @@ public class WestminsterShoppingGUI {
         if (fieldEmpty) {
             User user = new User(null, inputUsername, inputPassword1);
             JOptionPane.showMessageDialog(signIn, "You're registered. Welcome !");
-            productSelectInterface.setVisible(true);
+            productSelectInterface(user).setVisible(true);
             signIn.setVisible(false);
         }
     }
 
-    public JFrame productSelectInterface() {
+    public JFrame productSelectInterface(User user) {
         JFrame productSelect = new JFrame("Westminster Shopping Centre");
 
         JPanel productSelectPanel = new JPanel(new BorderLayout());
@@ -149,7 +176,7 @@ public class WestminsterShoppingGUI {
         JButton shoppingCartButton = new JButton("Shopping Cart");
         shoppingCartButton.addActionListener(e -> {
             shoppingCart.setVisible(true);
-            productSelectInterface.setVisible(false);
+            productSelectInterface(user).setVisible(false);
         });
 
         JPanel buttonPanel = new JPanel();

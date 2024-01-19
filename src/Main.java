@@ -80,12 +80,9 @@ public class Main {
                 manager.saveProducts();
                 break;
             case 5:
-                manager.loadProducts();
+                WestminsterShoppingManager.loadProducts();
                 break;
             case 6:
-//                WestminsterShoppingGUI t = new WestminsterShoppingGUI();
-//                t.hashMapToArrayList();
-//                WestminsterShoppingGUI.main(null);
                 break;
             default:
                 System.out.println("Invalid option. Please try again.");
@@ -110,9 +107,7 @@ public class Main {
                 case 1:
                     //TODO : user functionality implementation
                     //TODO : GUI Should start to run
-                    WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
                     WestminsterShoppingGUI.main(null);
-
                     break;
                 case 2:
                     ManagerConsoleContent();
