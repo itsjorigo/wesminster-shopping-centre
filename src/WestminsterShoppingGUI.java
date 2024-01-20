@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,6 +28,7 @@ public class WestminsterShoppingGUI {
     }
 
     public JFrame userLogin() {
+        User.loadUsers();
         JFrame login = new JFrame("User Login Page");
 
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -146,6 +148,7 @@ public class WestminsterShoppingGUI {
         if (fieldEmpty) {
             User user = new User(null, inputUsername, inputPassword1);
             User.setUsers(user);
+            User.saveUsers();
             JOptionPane.showMessageDialog(signIn, "You're registered. Welcome !");
             productSelectInterface(user).setVisible(true);
             signIn.setVisible(false);
@@ -351,7 +354,7 @@ public class WestminsterShoppingGUI {
     public JFrame shoppingCart() {
         JFrame cart = new JFrame("Shopping Cart");
 
-        JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel cartPanel = new JPanel(new BorderLayout());
 
         DefaultTableModel model = new DefaultTableModel();
         JTable table = new JTable(model);
@@ -364,23 +367,40 @@ public class WestminsterShoppingGUI {
             model.addColumn(columnName);
         }
 
-        Object[] tabledata= {"B201, Leggings, M, Black", "2", "45.80"};
-        Object[] tabledata1= {"B201, Leggings, M, Black", "2", "45.80"};
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        Object[] tabledata = {"B201, Leggings, M, Black", "2", "45.80"};
+        Object[] tabledata1 = {"B201, Leggings, M, Black", "2", "45.80"};
 
         model.addRow(tabledata);
         model.addRow(tabledata1);
 
+        cartPanel.add(scrollPane, BorderLayout.CENTER);
 
-//        cartPanel.add(cartLabel);
-        cartPanel.add(table);
+        JPanel finalbill = new JPanel(new GridLayout(4, 1)); // 4 rows, 1 column
+
+        JLabel totalLabel = new JLabel("Total : ");
+        JLabel firstPurchaseLabel = new JLabel("First Purchase Discount (10 %) : ");
+        JLabel threeProductLabel = new JLabel("Three items in same Category Discount (20 %) : ");
+        JLabel finalTotalLabel = new JLabel("Final Total : ");
+
+        finalbill.add(totalLabel);
+        finalbill.add(firstPurchaseLabel);
+        finalbill.add(threeProductLabel);
+        finalbill.add(finalTotalLabel);
+
+        finalbill.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 
-        cart.add(cartPanel);
+        cart.add(cartPanel, BorderLayout.CENTER);
+        cart.add(finalbill, BorderLayout.SOUTH);
+
         cart.setSize(400, 400);
         cart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         return cart;
     }
+
 
     public static void main(String[] args) {
         WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();

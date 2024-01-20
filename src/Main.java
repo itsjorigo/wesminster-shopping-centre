@@ -98,6 +98,7 @@ public class Main {
         System.out.println();
 
         WestminsterShoppingManager.loadProducts();
+        User.saveUsers();
 
         while (state){
             state = false;

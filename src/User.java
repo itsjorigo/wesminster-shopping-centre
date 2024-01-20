@@ -1,11 +1,16 @@
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 
-public class User {
-
+public class User implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private static ArrayList<User> users;
     private ArrayList<Product> productHistory= new ArrayList<>();
     private String username;
     private String password;
+    private static final String userFile = "users.txt";
+
 
     public User(ArrayList<Product> productHistory, String username, String password) {
         this.productHistory = productHistory;
@@ -29,8 +34,10 @@ public class User {
     }
 
     public void setProductHistory(Product product) {
-        productHistory.add(product);
-    }
+        if (productHistory == null) {
+            productHistory = new ArrayList<>();
+        }
+        productHistory.add(product);    }
 
     public String getUsername() {
         return username;
@@ -47,5 +54,25 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    static public void saveUsers(){
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(userFile))) {
+            out.writeObject(users);
+            System.out.println("Users saved to file.");
+        } catch (IOException e) {
+            System.out.println("Error saving users to file: " + e.getMessage());
+        }
+    }
+
+    static public void loadUsers(){
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(userFile))) {
+            users = (ArrayList<User>) in.readObject();
+            System.out.println("Users loaded from file.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading users from file: " + e.getMessage());
+            e.printStackTrace(); // Add this line for debugging
+        }
+    }
+
 
 }
