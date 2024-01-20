@@ -12,7 +12,7 @@ public class User implements Serializable {
     private static final String userFile = "users.txt";
 
 
-    public User(ArrayList<Product> productHistory, String username, String password) {
+    public User(String username, String password, ArrayList<Product> productHistory ) {
         this.productHistory = productHistory;
         this.username = username;
         this.password = password;
@@ -25,8 +25,8 @@ public class User implements Serializable {
         return users;
     }
 
-    public static void setUsers(User user) {
-        users.add(user);
+    public static void setUsers(ArrayList<User> users) {
+        User.users = users;
     }
 
     public ArrayList<Product> getProductHistory() {

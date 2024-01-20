@@ -263,7 +263,7 @@ public class WestminsterShoppingGUI {
         WestminsterShoppingGUI shoppingGUI = new WestminsterShoppingGUI();
 
 
-        JFrame productSelectFrame = shoppingGUI.productSelectInterface(new User(null,"admin","admin"));
+        JFrame productSelectFrame = shoppingGUI.productSelectInterface(new User("admin","admin", new ArrayList<>()));
 
 
         productSelectFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

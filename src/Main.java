@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -90,6 +91,8 @@ public class Main {
     }
 
     public static void userConsole(){
+        ArrayList<User> users = User.getUsers();
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Are you a registered customer or a new customer ?");
@@ -103,9 +106,40 @@ public class Main {
             int userRole = sc.nextInt();
 
             if (userRole == 1){
-                //TODO : implement this
+
+                System.out.println("Enter your enteredUsername: ");
+                String enteredUsername = sc.next();
+
+                System.out.println("Enter your enteredPassword: ");
+                String enteredPassword = sc.next();
+
+                for (User user : users){
+                    if (user.getUsername().equals(enteredUsername) && user.getPassword().equals(enteredPassword)){
+                        System.out.println("Login successful ! Welcome!");
+                        WestminsterShoppingGUI.main(null);
+                    }
+                }
+                System.out.println("Login unsuccessful ! Welcome!");
+
             }else if (userRole == 2){
-                //TODO : implement this
+
+                System.out.println("Enter your username: ");
+                String enteredUsername = sc.next();
+
+                System.out.println("Enter your password: ");
+                String enteredPassword = sc.next();
+
+                User user = new User(enteredUsername, enteredPassword, new ArrayList<>());
+
+                if (users == null) {
+                    users = new ArrayList<>();
+                }
+
+                users.add(user);
+                System.out.println("User registration successful !");
+                User.setUsers(users);
+                WestminsterShoppingGUI.main(null);
+
             }else {
                 System.out.println("Invalid input, Try Again!!");
                 state = true;
@@ -129,18 +163,14 @@ public class Main {
             state = false;
             int role = Main.inputHandlingInt("Are you a Customer or a Manager (1 or 2) ? : ");
 
-            switch (role){
-                case 1:
-
-                    WestminsterShoppingGUI.main(null);
-                    break;
-                case 2:
-                    ManagerConsoleContent();
-                    break;
-                default:
+            switch (role) {
+                case 1 -> userConsole();
+                case 2 -> ManagerConsoleContent();
+                default -> {
                     System.out.println("Invalid option. Please try again.");
                     System.out.println();
                     state = true;
+                }
             }
         }
     }
