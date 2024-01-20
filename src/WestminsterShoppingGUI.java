@@ -17,6 +17,8 @@ public class WestminsterShoppingGUI {
     private JFrame productSelectInterface;
     private JFrame shoppingCart;
     private JPanel selectedProductsDetailsPanel;
+    private static ArrayList<Product> items = new ArrayList<>();
+
 
     public WestminsterShoppingGUI() {
         selectedProductsDetailsPanel = new JPanel(); // Initialize the panel here
@@ -163,6 +165,7 @@ public class WestminsterShoppingGUI {
     }
 
     public void displaySelectedProductsDetails(Object productId, DefaultTableModel model, User user) {
+
         selectedProductsDetailsPanel.removeAll();
         for (Product product : productValues) {
             if (productId.equals(product.getProductID())) {
@@ -196,6 +199,11 @@ public class WestminsterShoppingGUI {
                 addToCart.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        items.add(product);
+                        System.out.println("Items in the shopping cart:");
+                        for (Product item : items) {
+                            System.out.println(item);
+                        }
                         user.setProductHistory(product);
                         JOptionPane.showMessageDialog(null, "Product added successfully !");
                     }
@@ -209,8 +217,8 @@ public class WestminsterShoppingGUI {
     }
 
     public JFrame shoppingCart() {
-        JFrame cart = new JFrame("Shopping Cart");
 
+        JFrame cart = new JFrame("Shopping Cart");
         JPanel cartPanel = new JPanel(new BorderLayout());
 
         DefaultTableModel model = new DefaultTableModel();
@@ -224,21 +232,15 @@ public class WestminsterShoppingGUI {
             model.addColumn(columnName);
         }
 
+        updateCartTable(model);
+
         JScrollPane scrollPane = new JScrollPane(table);
-
-        Object[] tabledata = {"B201, Leggings, M, Black", "2", "45.80"};
-        Object[] tabledata1 = {"B201, Leggings, M, Black", "2", "45.80"};
-
-        model.addRow(tabledata);
-        model.addRow(tabledata1);
-
         cartPanel.add(scrollPane, BorderLayout.CENTER);
 
-        JPanel finalbill = new JPanel(new GridLayout(4, 1)); // 4 rows, 1 column
-
-        JLabel totalLabel = new JLabel("Total : ");
+        JPanel finalbill = new JPanel(new GridLayout(4, 1));
+        JLabel totalLabel = new JLabel("Total : " + TotalPrice());
         JLabel firstPurchaseLabel = new JLabel("First Purchase Discount (10 %) : ");
-        JLabel threeProductLabel = new JLabel("Three items in same Category Discount (20 %) : ");
+        JLabel threeProductLabel = new JLabel("Three items in the same Category Discount (20 %) : ");
         JLabel finalTotalLabel = new JLabel("Final Total : ");
 
         finalbill.add(totalLabel);
@@ -247,7 +249,6 @@ public class WestminsterShoppingGUI {
         finalbill.add(finalTotalLabel);
 
         finalbill.setBorder(new EmptyBorder(10, 10, 10, 10));
-
 
         cart.add(cartPanel, BorderLayout.CENTER);
         cart.add(finalbill, BorderLayout.SOUTH);
@@ -258,17 +259,46 @@ public class WestminsterShoppingGUI {
         return cart;
     }
 
+    public void updateCartTable(DefaultTableModel model){
+        List<Object[]> tableDataList = new ArrayList<>();
+
+        for (Product product : items) {
+            String productString;
+            if (product instanceof Electronics) {
+                productString = product.getProductID() + " ," + product.getProductName() + " ," + ((Electronics) product).getProductBrand() + " ," + ((Electronics) product).getProductWarranty();
+            } else if (product instanceof Clothing) {
+                productString = product.getProductID() + " ," + product.getProductName() + " ," + ((Clothing) product).getProductSize() + " ," + ((Clothing) product).getProductColor();
+            } else {
+                productString = "Unknown Product Type";
+            }
+
+            Object[] tableRowProduct = new Object[]{
+                    productString,
+                    product.getProductNOU(),
+                    product.getProductPrice()
+            };
+            tableDataList.add(tableRowProduct);
+        }
+
+        for (Object[] rowdata : tableDataList) {
+            model.addRow(rowdata);
+        }
+    }
+
+    public double TotalPrice() {
+        double totalPrice = 0;
+        for (Product product : items) {
+            totalPrice += product.getProductPrice();
+        }
+        return totalPrice;
+    }
 
     public static void main(String[] args) {
         WestminsterShoppingGUI shoppingGUI = new WestminsterShoppingGUI();
 
-
-        JFrame productSelectFrame = shoppingGUI.productSelectInterface(new User("admin","admin", new ArrayList<>()));
-
+        JFrame productSelectFrame = shoppingGUI.productSelectInterface(new User("admin", "admin", new ArrayList<>()));
 
         productSelectFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         productSelectFrame.setVisible(true);
-
-
     }
 }
