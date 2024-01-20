@@ -89,6 +89,31 @@ public class Main {
         }
     }
 
+    public static void userConsole(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Are you a registered customer or a new customer ?");
+        System.out.println("1. Registered");
+        System.out.println("2. Unregistered");
+        System.out.println("Enter your option:");
+        System.out.println("--------------------------------------------------------");
+
+        boolean state = false;
+        while (!state){
+            int userRole = sc.nextInt();
+
+            if (userRole == 1){
+                //TODO : implement this
+            }else if (userRole == 2){
+                //TODO : implement this
+            }else {
+                System.out.println("Invalid input, Try Again!!");
+                state = true;
+            }
+        }
+
+    }
+
     public static void main(String[] args) {
         boolean state = true;
 
@@ -106,8 +131,7 @@ public class Main {
 
             switch (role){
                 case 1:
-                    //TODO : user functionality implementation
-                    //TODO : GUI Should start to run
+
                     WestminsterShoppingGUI.main(null);
                     break;
                 case 2:
