@@ -260,11 +260,15 @@ public class WestminsterShoppingGUI {
 
 
     public static void main(String[] args) {
-        WestminsterShoppingGUI GUI = new WestminsterShoppingGUI();
-        JFrame login = GUI.productSelectInterface;
+        WestminsterShoppingGUI shoppingGUI = new WestminsterShoppingGUI();
 
-        login.setSize(300, 150);
-        login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        login.setVisible(true);
+
+        JFrame productSelectFrame = shoppingGUI.productSelectInterface(new User(null,"admin","admin"));
+
+
+        productSelectFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        productSelectFrame.setVisible(true);
+
+
     }
 }
