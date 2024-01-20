@@ -18,6 +18,8 @@ public class WestminsterShoppingGUI {
     private JFrame shoppingCart;
     private JPanel selectedProductsDetailsPanel;
     private static ArrayList<Product> items = new ArrayList<>();
+    private JTable cartTable = new JTable();
+    private DefaultTableModel cartTableModel = new DefaultTableModel();
 
 
     public WestminsterShoppingGUI() {
@@ -38,6 +40,8 @@ public class WestminsterShoppingGUI {
         JButton shoppingCartButton = new JButton("Shopping Cart");
         shoppingCartButton.addActionListener(e -> {
             shoppingCart.setVisible(true);
+            updateCartTable(cartTable);
+
             productSelectInterface(user).setVisible(false);
         });
 
@@ -221,20 +225,18 @@ public class WestminsterShoppingGUI {
         JFrame cart = new JFrame("Shopping Cart");
         JPanel cartPanel = new JPanel(new BorderLayout());
 
-        DefaultTableModel model = new DefaultTableModel();
-        JTable table = new JTable(model);
+        DefaultTableModel cartTableModel = new DefaultTableModel();
+        JTable cartTable = new JTable(cartTableModel);
 
         String[] columnNames = {"Product", "Quantity", "Price"};
 
-        table.setDefaultEditor(Object.class, null);
+        cartTable.setDefaultEditor(Object.class, null);
 
         for (String columnName : columnNames) {
-            model.addColumn(columnName);
+            cartTableModel.addColumn(columnName);
         }
 
-        updateCartTable(model);
-
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(cartTable);
         cartPanel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel finalbill = new JPanel(new GridLayout(4, 1));
@@ -259,15 +261,15 @@ public class WestminsterShoppingGUI {
         return cart;
     }
 
-    public void updateCartTable(DefaultTableModel model){
+    public void updateCartTable(JTable table) {
         List<Object[]> tableDataList = new ArrayList<>();
 
         for (Product product : items) {
             String productString;
             if (product instanceof Electronics) {
-                productString = product.getProductID() + " ," + product.getProductName() + " ," + ((Electronics) product).getProductBrand() + " ," + ((Electronics) product).getProductWarranty();
+                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
             } else if (product instanceof Clothing) {
-                productString = product.getProductID() + " ," + product.getProductName() + " ," + ((Clothing) product).getProductSize() + " ," + ((Clothing) product).getProductColor();
+                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
             } else {
                 productString = "Unknown Product Type";
             }
@@ -280,8 +282,10 @@ public class WestminsterShoppingGUI {
             tableDataList.add(tableRowProduct);
         }
 
-        for (Object[] rowdata : tableDataList) {
-            model.addRow(rowdata);
+        // Use the class variable cartTableModel here
+        cartTableModel.setRowCount(0); // Clear existing rows
+        for (Object[] rowData : tableDataList) {
+            cartTableModel.addRow(rowData);
         }
     }
 
