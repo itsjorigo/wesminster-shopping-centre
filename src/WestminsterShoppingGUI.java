@@ -137,14 +137,8 @@ public class WestminsterShoppingGUI {
                 fieldEmpty = false;
                 break;
             }
-
-            // Correct comparison with inputPassword1 and inputPassword2
-            if (!inputPassword1.equals(inputPassword2)) {
-                JOptionPane.showMessageDialog(signIn, "Passwords don't match !");
-                fieldEmpty = false;
-                break;
-            }
         }
+
         if (fieldEmpty) {
             User user = new User(null, inputUsername, inputPassword1);
             User.setUsers(user);

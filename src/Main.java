@@ -97,8 +97,8 @@ public class Main {
         System.out.println("--------------------------------------------------------------");
         System.out.println();
 
-        WestminsterShoppingManager.loadProducts();
         User.saveUsers();
+        WestminsterShoppingManager.loadProducts();
 
         while (state){
             state = false;

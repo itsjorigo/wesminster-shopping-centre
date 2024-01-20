@@ -64,7 +64,8 @@ public class User implements Serializable {
         }
     }
 
-    static public void loadUsers(){
+
+    static public void loadUsers() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(userFile))) {
             users = (ArrayList<User>) in.readObject();
             System.out.println("Users loaded from file.");
