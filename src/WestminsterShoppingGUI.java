@@ -17,7 +17,7 @@ public class WestminsterShoppingGUI {
     private JFrame productSelectInterface;
     private JFrame shoppingCart;
     private JPanel selectedProductsDetailsPanel;
-    private   ArrayList<Product> items = new ArrayList<>();
+    private ArrayList<Product> items = new ArrayList<>();
     private JTable cartTable = new JTable();
     private DefaultTableModel cartTableModel = new DefaultTableModel();
 
@@ -243,11 +243,14 @@ public class WestminsterShoppingGUI {
         JScrollPane scrollPane = new JScrollPane(cartTable);
         cartPanel.add(scrollPane, BorderLayout.CENTER);
 
+        double totalPrice = TotalPrice();
+//        double discount10 = firstPurchase(,totalPrice);
+
         JPanel finalbill = new JPanel(new GridLayout(4, 1));
-        JLabel totalLabel = new JLabel("Total : " + TotalPrice());
+        JLabel totalLabel = new JLabel("Total : " + totalPrice);
         JLabel firstPurchaseLabel = new JLabel("First Purchase Discount (10 %) : ");
         JLabel threeProductLabel = new JLabel("Three items in the same Category Discount (20 %) : ");
-        JLabel finalTotalLabel = new JLabel("Final Total : ");
+        JLabel finalTotalLabel = new JLabel("Final Total : " + totalPrice);
 
         finalbill.add(totalLabel);
         finalbill.add(firstPurchaseLabel);
@@ -265,31 +268,31 @@ public class WestminsterShoppingGUI {
         return cart;
     }
 
-    public void updateCartTable(JTable table) {
-        List<Object[]> tableDataList = new ArrayList<>();
-
-        for (Product product : items) {
-            String productString;
-            if (product instanceof Electronics) {
-                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
-            } else if (product instanceof Clothing) {
-                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
-            } else {
-                productString = "Unknown Product Type";
-            }
-
-            Object[] tableRowProduct = new Object[]{
-                    productString,
-                    product.getProductNOU(),
-                    product.getProductPrice()
-            };
-            tableDataList.add(tableRowProduct);
-        }
-
-        for (Object[] rowData : tableDataList) {
-            cartTableModel.addRow(rowData);
-        }
-    }
+//    public void updateCartTable(JTable table) {
+//        List<Object[]> tableDataList = new ArrayList<>();
+//
+//        for (Product product : items) {
+//            String productString;
+//            if (product instanceof Electronics) {
+//                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
+//            } else if (product instanceof Clothing) {
+//                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
+//            } else {
+//                productString = "Unknown Product Type";
+//            }
+//
+//            Object[] tableRowProduct = new Object[]{
+//                    productString,
+//                    product.getProductNOU(),
+//                    product.getProductPrice()
+//            };
+//            tableDataList.add(tableRowProduct);
+//        }
+//
+//        for (Object[] rowData : tableDataList) {
+//            cartTableModel.addRow(rowData);
+//        }
+//    }
 
     public double TotalPrice() {
         double totalPrice = 0;
@@ -298,6 +301,16 @@ public class WestminsterShoppingGUI {
         }
         return totalPrice;
     }
+
+//    public double firstPurchase(Product product, double totalPrice){
+//        for (Product historyItem : items){
+//            if (!historyItem.getProductID().equals(product.getProductID())){
+//                double discount = (totalPrice * (0.1));
+//                return discount;
+//            }
+//        }
+//        return 0;
+//    }
 
     public static void main(String[] args) {
         WestminsterShoppingGUI shoppingGUI = new WestminsterShoppingGUI();
