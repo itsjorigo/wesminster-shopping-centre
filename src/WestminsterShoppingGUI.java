@@ -17,7 +17,7 @@ public class WestminsterShoppingGUI {
     private JFrame productSelectInterface;
     private JFrame shoppingCart;
     private JPanel selectedProductsDetailsPanel;
-    private static ArrayList<Product> items = new ArrayList<>();
+    private   ArrayList<Product> items = new ArrayList<>();
     private JTable cartTable = new JTable();
     private DefaultTableModel cartTableModel = new DefaultTableModel();
 
@@ -39,10 +39,10 @@ public class WestminsterShoppingGUI {
 
         JButton shoppingCartButton = new JButton("Shopping Cart");
         shoppingCartButton.addActionListener(e -> {
-            shoppingCart.setVisible(true);
-            updateCartTable(cartTable);
 
-            productSelectInterface(user).setVisible(false);
+            shoppingCart = shoppingCart();
+            shoppingCart.setVisible(true);
+
         });
 
         JPanel buttonPanel = new JPanel();
@@ -215,7 +215,6 @@ public class WestminsterShoppingGUI {
 
                 selectedProductsDetailsPanel.revalidate();
                 selectedProductsDetailsPanel.repaint();
-                break;
             }
         }
     }
@@ -234,6 +233,14 @@ public class WestminsterShoppingGUI {
 
         for (String columnName : columnNames) {
             cartTableModel.addColumn(columnName);
+        }
+
+        System.out.println(items);
+        for (Product item : items){
+            String[] rowData = { item.getProductName() , String.valueOf(item.getProductNOU()) , String.valueOf(item.getProductPrice()) };
+            cartTableModel.addRow(rowData);
+//            cartTable.setBackground(Color.GREEN);
+
         }
 
         JScrollPane scrollPane = new JScrollPane(cartTable);
@@ -283,7 +290,7 @@ public class WestminsterShoppingGUI {
         }
 
         // Use the class variable cartTableModel here
-        cartTableModel.setRowCount(0); // Clear existing rows
+//        cartTableModel.setRowCount(0); // Clear existing rows
         for (Object[] rowData : tableDataList) {
             cartTableModel.addRow(rowData);
         }
