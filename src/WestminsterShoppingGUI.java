@@ -245,12 +245,14 @@ public class WestminsterShoppingGUI {
 
         double totalPrice = TotalPrice();
 //        double discount10 = firstPurchase(,totalPrice);
+        double threeItemsDiscount = threeItemsDiscount(totalPrice);
+        double finalPrice = totalPrice - threeItemsDiscount;
 
         JPanel finalbill = new JPanel(new GridLayout(4, 1));
         JLabel totalLabel = new JLabel("Total : " + totalPrice);
         JLabel firstPurchaseLabel = new JLabel("First Purchase Discount (10 %) : ");
-        JLabel threeProductLabel = new JLabel("Three items in the same Category Discount (20 %) : ");
-        JLabel finalTotalLabel = new JLabel("Final Total : " + totalPrice);
+        JLabel threeProductLabel = new JLabel("Three items in the same Category Discount (20 %) : " + threeItemsDiscount);
+        JLabel finalTotalLabel = new JLabel("Final Total : " + finalPrice);
 
         finalbill.add(totalLabel);
         finalbill.add(firstPurchaseLabel);
@@ -268,32 +270,6 @@ public class WestminsterShoppingGUI {
         return cart;
     }
 
-//    public void updateCartTable(JTable table) {
-//        List<Object[]> tableDataList = new ArrayList<>();
-//
-//        for (Product product : items) {
-//            String productString;
-//            if (product instanceof Electronics) {
-//                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Electronics) product).getProductBrand() + ", " + ((Electronics) product).getProductWarranty();
-//            } else if (product instanceof Clothing) {
-//                productString = product.getProductID() + ", " + product.getProductName() + ", " + ((Clothing) product).getProductSize() + ", " + ((Clothing) product).getProductColor();
-//            } else {
-//                productString = "Unknown Product Type";
-//            }
-//
-//            Object[] tableRowProduct = new Object[]{
-//                    productString,
-//                    product.getProductNOU(),
-//                    product.getProductPrice()
-//            };
-//            tableDataList.add(tableRowProduct);
-//        }
-//
-//        for (Object[] rowData : tableDataList) {
-//            cartTableModel.addRow(rowData);
-//        }
-//    }
-
     public double TotalPrice() {
         double totalPrice = 0;
         for (Product product : items) {
@@ -302,15 +278,39 @@ public class WestminsterShoppingGUI {
         return totalPrice;
     }
 
-//    public double firstPurchase(Product product, double totalPrice){
-//        for (Product historyItem : items){
-//            if (!historyItem.getProductID().equals(product.getProductID())){
-//                double discount = (totalPrice * (0.1));
-//                return discount;
-//            }
-//        }
-//        return 0;
-//    }
+    public double firstPurchase(Product product, double totalPrice){
+        for (Product historyItem : items){
+            if (!historyItem.getProductID().equals(product.getProductID())){
+                double discount = (totalPrice * (0.1));
+                return discount;
+            }
+        }
+        return 0;
+    }
+
+    public double threeItemsDiscount(double totalPrice){
+        int electronicsCount = 0;
+        int clothingCount = 0;
+        double discount = 0.0;
+
+        for (Product product : items){
+            if (product instanceof Electronics){
+                electronicsCount++;
+            }else if (product instanceof Clothing){
+                clothingCount++;
+            }
+        }
+
+        if (electronicsCount >= 3){
+            discount = discount + (totalPrice * (0.2));
+        }
+
+        if (clothingCount >= 3){
+            discount = discount + (totalPrice * (0.2));
+        }
+
+        return discount;
+    }
 
     public static void main(String[] args) {
         WestminsterShoppingGUI shoppingGUI = new WestminsterShoppingGUI();
