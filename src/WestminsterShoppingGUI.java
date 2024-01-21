@@ -100,7 +100,6 @@ public class WestminsterShoppingGUI {
                 }
             }
         });
-
         return scrollPane;
     }
 
@@ -239,8 +238,6 @@ public class WestminsterShoppingGUI {
         for (Product item : items){
             String[] rowData = { item.getProductName() , String.valueOf(item.getProductNOU()) , String.valueOf(item.getProductPrice()) };
             cartTableModel.addRow(rowData);
-//            cartTable.setBackground(Color.GREEN);
-
         }
 
         JScrollPane scrollPane = new JScrollPane(cartTable);
@@ -289,8 +286,6 @@ public class WestminsterShoppingGUI {
             tableDataList.add(tableRowProduct);
         }
 
-        // Use the class variable cartTableModel here
-//        cartTableModel.setRowCount(0); // Clear existing rows
         for (Object[] rowData : tableDataList) {
             cartTableModel.addRow(rowData);
         }

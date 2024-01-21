@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class User implements Serializable {
     @Serial
@@ -55,17 +54,26 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    static public void saveUsers(){
+    public static void saveUsers( ArrayList<User> abc){
+        ArrayList<User> existingUsers = loadUsers();
+
+        // Add new users to the loaded list
+        if (existingUsers == null) {
+            existingUsers = new ArrayList<>();
+        }
+        existingUsers.addAll(abc);
+
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(userFile))) {
-            out.writeObject(users);
+            out.writeObject(existingUsers);
+            System.out.println(existingUsers);
             System.out.println("Users saved to file.");
+
         } catch (IOException e) {
             System.out.println("Error saving users to file: " + e.getMessage());
         }
     }
 
-
-    static public void loadUsers() {
+    static public ArrayList<User> loadUsers() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(userFile))) {
             users = (ArrayList<User>) in.readObject();
             System.out.println("Users loaded from file.");
@@ -73,7 +81,9 @@ public class User implements Serializable {
             System.out.println("Error loading users from file: " + e.getMessage());
             e.printStackTrace(); // Add this line for debugging
         }
+        return users;
     }
+
 
 
 }

@@ -107,16 +107,23 @@ public class Main {
 
             if (userRole == 1){
 
+
+
                 System.out.println("Enter your enteredUsername: ");
                 String enteredUsername = sc.next();
 
                 System.out.println("Enter your enteredPassword: ");
                 String enteredPassword = sc.next();
 
-                for (User user : users){
+                for (User user :   User.loadUsers()){
+                    System.out.println(user);
                     if (user.getUsername().equals(enteredUsername) && user.getPassword().equals(enteredPassword)){
                         System.out.println("Login successful ! Welcome!");
+
                         WestminsterShoppingGUI.main(null);
+
+
+                     return;
                     }
                 }
                 System.out.println("Login unsuccessful ! Welcome!");
@@ -129,7 +136,17 @@ public class Main {
                 System.out.println("Enter your password: ");
                 String enteredPassword = sc.next();
 
-                User user = new User(enteredUsername, enteredPassword, new ArrayList<>());
+                ArrayList<Product> test = new ArrayList<>();
+
+
+                for (Product product : WestminsterShoppingManager.stocks.values()){
+                    test.add(product);
+                    break;
+                }
+
+
+
+                User user = new User(enteredUsername, enteredPassword, test);
 
                 if (users == null) {
                     users = new ArrayList<>();
@@ -138,8 +155,8 @@ public class Main {
                 users.add(user);
                 System.out.println("User registration successful !");
                 User.setUsers(users);
+                User.saveUsers(users);
                 WestminsterShoppingGUI.main(null);
-
             }else {
                 System.out.println("Invalid input, Try Again!!");
                 state = true;
@@ -156,7 +173,7 @@ public class Main {
         System.out.println("--------------------------------------------------------------");
         System.out.println();
 
-        User.saveUsers();
+//        User.saveUsers();
         WestminsterShoppingManager.loadProducts();
 
         while (state){
