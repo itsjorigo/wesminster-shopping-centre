@@ -107,8 +107,6 @@ public class Main {
 
             if (userRole == 1){
 
-
-
                 System.out.println("Enter your enteredUsername: ");
                 String enteredUsername = sc.next();
 

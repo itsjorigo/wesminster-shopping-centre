@@ -4,7 +4,6 @@ import java.io.Serializable;
 public class Electronics extends Product implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
     private String productBrand;
     private int productWarranty;
 

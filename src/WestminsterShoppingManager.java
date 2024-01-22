@@ -172,7 +172,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
         } catch (IOException e) {
             System.out.println("Error saving products to file: " + e.getMessage());
         }
-        Main.ManagerConsoleContent();
     }
 
     static public void loadProducts(){
