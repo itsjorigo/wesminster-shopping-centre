@@ -1,13 +1,12 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -79,6 +78,12 @@ public class WestminsterShoppingGUI {
             model.addColumn(columnName);
         }
 
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
         JScrollPane scrollPane = new JScrollPane(table);
         categoryComboBox.addActionListener(new ActionListener() {
             @Override
@@ -143,6 +148,9 @@ public class WestminsterShoppingGUI {
             };
             tableDataList.add(rowData);
         }
+
+        Collections.sort(tableDataList, Comparator.comparing(row -> (String) row[1]));
+
         model.setRowCount(0);
         for (Object[] rowData : tableDataList) {
             model.addRow(rowData);
@@ -232,6 +240,12 @@ public class WestminsterShoppingGUI {
 
         for (String columnName : columnNames) {
             cartTableModel.addColumn(columnName);
+        }
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < cartTable.getColumnCount(); i++) {
+            cartTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
         System.out.println(items);

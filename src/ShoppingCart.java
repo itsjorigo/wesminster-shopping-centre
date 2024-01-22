@@ -8,10 +8,6 @@ import java.util.List;
 public class ShoppingCart {
     private static ArrayList<Product> items;
 
-//    public ShoppingCart(ArrayList<Product> products) {
-//        items = new ArrayList<>(products);
-//    }
-
     public ShoppingCart(ArrayList<Product> products) {
         if (products != null) {
             items = new ArrayList<>(products);
